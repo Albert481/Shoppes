@@ -35,7 +35,7 @@ var sequelizeSessionStore = new SessionStore({
 
 // App setup
 var app = express();
-var serverPort = 3000;
+var serverPort = process.env.PORT || 3000;
 var httpServer = require('http').Server(app);
 
 // view engine setup
