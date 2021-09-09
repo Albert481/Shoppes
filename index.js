@@ -18,7 +18,8 @@ var upload = multer({ dest: './public/uploads/', limits: {fileSize: 1500000, fil
 
 //Import controllers
 var index = require('./server/controllers/listing/index');
-var category = require('./server/controllers/listing/category')
+var category = require('./server/controllers/listing/category');
+var sell = require('./server/controllers/listing/sell');
 
 // Modules to store session
 var myDatabase = require('./server/controllers/database/mysql');
@@ -103,6 +104,7 @@ const isLoggedIn = (req, res, next) => {
 // Index route
 app.get('/', index.show)
 app.get('/c', category.show)
+app.get('/sell', sell.show)
 
 
 app.get('/auth/google',

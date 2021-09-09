@@ -392,49 +392,6 @@
       </div>
     </div>
 
-    <!-- Login Modal -->
-    <div class="modal" id="login">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content form-wrapper">
-          <div class="close-box" data-dismiss="modal">
-            <i class="icon icon-times icon-2x"></i>
-          </div>
-          <div class="container-fluid">
-            <form action="{{route('login')}}" method="post" id="LoginForm">
-              <div class="form-group text-center">
-                <h4>Register or Login</h4>
-                <h6>Register or sign in with your email address</h6>
-              </div>
-              <div class="form-group" style="position: relative;">
-                <label for="l_email">Email address</label>
-                <input type="email" id="l_email" class="form-control mb-1" placeholder="" required>
-              </div>
-
-              <div class="form-group pt-2">
-                <button class="btn btn-primary form-control">Continue</button>
-              </div>
-              <div class="form-group text-center pt-2 social-login">
-                <h6>&mdash; OR &mdash;</h6>
-                <div>
-                  
-                  <button class="btn btn-secondary form-control border-outline" style="margin-bottom: 12px !important;"><a href="/auth/google" class="google" style="color: #25262a;"> <i class="icon mr-4 icon-google-plus"></i>Continue with Google</a></button>
-                </div>
-                <div>
-                  
-                  <button class="btn btn-secondary form-control border-outline" style="margin-bottom: 12px !important;"><a href="/auth/facebook" class="facebook" style="color: #25262a;"> <i class="icon mr-4 icon-facebook"></i>Continue with Facebook </a></button>
-                </div>
-                <div>
-                  
-                  <button class="btn btn-secondary form-control border-outline" style="margin-bottom: 12px !important;"><a href="#" class="apple" style="color: #25262a;"> <i class="icon mr-4 icon-apple"></i>Continue with Apple</a></button>
-                </div>
-                
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <%- include('../partials/footer') %>
   
   </div>
