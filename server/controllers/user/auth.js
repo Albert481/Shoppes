@@ -5,6 +5,19 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 var User = require('../../models/User')
 
+const inDevMode = process.env.NODE_ENV === "DEV";
+
+var GOOGLE_CALLBACK_URI = "";
+var FACEBOOK_CALLBACK_URI = "";
+
+if (inDevMode) {
+    GOOGLE_CALLBACK_URI = process.env.GOOGLE_CALLBACK_URI_DEV
+    FACEBOOK_CALLBACK_URI = process.env.FACEBOOK_CALLBACK_URI_DEV
+} else {
+    GOOGLE_CALLBACK_URI = process.env.GOOGLE_CALLBACK_URI_PROD
+    FACEBOOK_CALLBACK_URI = process.env.FACEBOOK_CALLBACK_URI_PROD
+}
+
 // serialize the user for the session
 passport.serializeUser(function (user, done) {
     done(null, user[0].id);
