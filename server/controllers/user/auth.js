@@ -36,7 +36,7 @@ passport.deserializeUser(function (userId, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: GOOGLE_CALLBACK_URI
     },
     function(accessToken, refreshToken, profile, done) {
         User.findOrCreate({ where: { email: profile.emails[0].value }, defaults: {fname: profile.name.givenName, lname: profile.name.familyName}}).then(user => {
@@ -49,7 +49,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    callbackURL: FACEBOOK_CALLBACK_URI,
     profileFields: ['email', 'first_name', 'last_name']
   },
     function(accessToken, refreshToken, profile, done) {
