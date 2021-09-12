@@ -10,6 +10,9 @@ var moment = require('moment');
 const connectDB = require('./server/controllers/database/mongo')
 connectDB()
 
+// Routers
+var itemRouter = require('./server/routes/sell/itemRouter');
+
 
 //import multer
 var multer = require('multer');
@@ -23,6 +26,7 @@ var upload = multer({ dest: './public/uploads/', limits: {fileSize: 1500000, fil
 var index = require('./server/controllers/listing/index');
 var category = require('./server/controllers/listing/category');
 var sell = require('./server/controllers/listing/sell');
+var brand = require('./server/controllers/shop/brand')
 
 // Modules to store session
 var myDatabase = require('./server/controllers/database/mysql');
@@ -47,12 +51,11 @@ app.set('views', path.join(__dirname, 'server/views/pages'));
 app.set('view engine', 'ejs');
 
 // Passport configuration
-require('dotenv').config();
 require('./server/controllers/user/auth');
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json())
 app.use(cookieParser());
 // app.use(require('node-sass-middleware')({
 //     src: path.join(__dirname, 'public'),
@@ -104,10 +107,11 @@ const isLoggedIn = (req, res, next) => {
     }
 }
 
-// Index route
+// Routes
 app.get('/', index.show)
 app.get('/c', category.show)
-app.get('/sell', sell.show)
+app.use('/', itemRouter);
+app.get('/brand', brand.show)
 
 
 app.get('/auth/google',
