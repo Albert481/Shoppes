@@ -39,6 +39,18 @@ const Users = sequelize.define('Users', {
         type: Sequelize.STRING,
         defaultValue: ""
     },
+    googleId: {
+        type: Sequelize.STRING,
+        defaultValue: ""
+    },
+    facebookId: {
+        type: Sequelize.STRING,
+        defaultValue: ""
+    },
+    appleId: {
+        type: Sequelize.STRING,
+        defaultValue: ""
+    }
 });
 
 // force: true will drop the table if it already exists

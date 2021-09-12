@@ -1,4 +1,3 @@
-require('dotenv').config();
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -20,7 +19,9 @@ if (inDevMode) {
 
 // serialize the user for the session
 passport.serializeUser(function (user, done) {
-    done(null, user[0].id);
+    console.log("serialize: " + JSON.stringify(user))
+    console.log("serializedID: " + user.id)
+    done(null, user.id);
 });
 // deserialize the user
 passport.deserializeUser(function (userId, done) {
@@ -38,11 +39,30 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: GOOGLE_CALLBACK_URI
     },
-    function(accessToken, refreshToken, profile, done) {
-        User.findOrCreate({ where: { email: profile.emails[0].value }, defaults: {fname: profile.name.givenName, lname: profile.name.familyName}}).then(user => {
-            console.log(user)                 
-            done(null, user);        
-        }).catch(error => console.log(error))
+    async function(accessToken, refreshToken, profile, done) {
+        try {
+            let user = await User.findOne({ where: {email: profile.emails[0].value }})
+            console.log("user: " + JSON.stringify(user))
+
+            // If user has account
+            if (user) { 
+                let googleUser = await User.findOne({ where: {googleId: profile.id} })
+
+                // If user has account but associated with other Auth Strategies, update user with googleId
+                if (googleUser === null) { 
+                    User.update({googleId: profile.id}, { where: { email: profile.emails[0].value}})
+                }
+                done(null, user);
+
+            } else { // If user no account, create
+                User.create({ email: profile.emails[0].value, fname: profile.name.givenName, lname: profile.name.familyName, googleId: profile.id }).then(user => {
+                    console.log(user)                 
+                    done(null, user);        
+                }).catch(error => console.log(error))
+            }
+        } catch(err) {
+            console.error(err);
+        }
     }
 ));
 
@@ -52,11 +72,31 @@ passport.use(new FacebookStrategy({
     callbackURL: FACEBOOK_CALLBACK_URI,
     profileFields: ['email', 'first_name', 'last_name']
   },
-    function(accessToken, refreshToken, profile, done) {
+    async function(accessToken, refreshToken, profile, done) {
         console.log(JSON.stringify(profile))
-        User.findOrCreate({ where: { email: profile.emails[0].value}, defaults: {fname: profile.name.givenName, lname: profile.name.familyName}}).then(user => {
-            console.log(user)                 
-            done(null, user);        
-        }).catch(error => console.log(error))
+
+        try {
+            let user = await User.findOne({ where: {email: profile.emails[0].value }})
+            console.log("user: " + JSON.stringify(user))
+
+            // If user has account
+            if (user) { 
+                let fbUser = await User.findOne({ where: {facebookId: profile.id} })
+
+                // If user has account but associated with other Auth Strategies, update user with googleId
+                if (fbUser === null) { 
+                    User.update({facebookId: profile.id}, { where: { email: profile.emails[0].value}})
+                }
+                done(null, user);
+
+            } else { // If user no account, create
+                User.create({ email: profile.emails[0].value, fname: profile.name.givenName, lname: profile.name.familyName, facebookId: profile.id }).then(user => {
+                    console.log(user)                 
+                    done(null, user);        
+                }).catch(error => console.log(error))
+            }
+        } catch(err) {
+            console.error(err);
+        }
     }
 ));

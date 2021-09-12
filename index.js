@@ -1,11 +1,14 @@
 
 // Import basic modules
 var express = require('express');
+const dotev = require('dotenv').config()
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var moment = require('moment');
+const connectDB = require('./server/controllers/database/mongo')
+connectDB()
 
 
 //import multer
