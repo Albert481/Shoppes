@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 
 const ItemSchema = new mongoose.Schema({
     id: {
+        type: String
+    },
+    user: {
         type: String,
         required: true
     },
@@ -13,33 +16,27 @@ const ItemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    category: {
-        type: String,
-        required: true
+    itemSubCat: {
+        type: String
     },
     type: {
-        type: String,
-        required: true
+        type: String
     },
     origin: {
-        type: String,
-        required: true
+        type: String
     },
     tags: {
-        type: String,
-        required: true
+        type: String
     },
     price: {
         type: String,
         required: true
     },
     quantity: {
-        type: String,
-        required: true
+        type: String
     },
     postageTime: {
-        type: String,
-        required: true
+        type: String
     }
 })
 

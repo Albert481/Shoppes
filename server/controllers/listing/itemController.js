@@ -1,3 +1,5 @@
+const Item = require('../../models/Item')
+
 exports.show = function(req, res) {
 	// Render home screen
 	res.render('sell', {
@@ -7,87 +9,39 @@ exports.show = function(req, res) {
 };
 
 // create listing
-exports.addItem = (req,res,next) => {
-    console.log(req.body)
-    // validate cateogry andselects subcategory based on the category submitted
-    if (req.body.itemCat=='1'){
-        subCat = req.body.itemSubCat[0]
-    } else if (req.body.itemCat=='2') {
-        subCat = req.body.itemSubCat[1]
-    } else if (req.body.itemCat=='3') {
-        subCat = req.body.itemSubCat[2]
-    } else if (req.body.itemCat=='4') {
-        subCat = req.body.itemSubCat[3]
-    } else {
-        return res.render('error', {
-            message: 'The item was not created',
-            error: {},
-            title: 'Item not created'
-        });
-    }
-    // validate subcategory
-    var subCatCheck = parseInt(subCat)
-    if (!(subCatCheck>=1&&subCatCheck<=13)){
-        return res.render('error', {
-            message: 'The item was not created',
-            error: {},
-            title: 'Item not created'
-        });
-    }
-    // validate item condition
-    var itemCondition = req.body.itemCondition
-    if (['new','owned','order'].indexOf(itemCondition)==-1){
-        return res.render('error', {
-            message: 'The item was not created',
-            error: {},
-            title: 'Item not created'
-        });
-    }
-    // check if mail/ meet are checked
-    mailCheck = false;
-    meetCheck = false;
-    if (req.body.itemLocation.indexOf('meet')>-1){
-        meetCheck = true;
-    }
-    if (req.body.itemLocation.indexOf('mail')>-1){
-        mailCheck = true;
-    }
-    // validate and round prices to 2dp
-    var itemPrice = parseFloat(req.body.itemPrice)
-    if (isNaN(itemPrice)){
-        return res.render('error', {
-            message: 'The item was not created',
-            error: {},
-            title: 'Item not created'
-        });
-    } else {
-        itemPrice = itemPrice.toFixed(2)
-    }
-
-    var itemMailPrice = parseFloat(req.body.itemMailPrice)
-    if (isNaN(itemMailPrice)){
-        itemMailPrice = 0
-    } else {
-        itemMailPrice = itemMailPrice.toFixed(2)
-    }
+exports.addItem = async (req,res,next) => {
+    // var itemData = {
+    //     itemName: req.body.itemName,
+    //     itemDesc: req.body.itemDesc,
+    //     itemPrice,
+    //     oldItemPrice: itemPrice,
+    //     itemCondition: req.body.itemCondition,
+    //     itemCat: req.body.itemCat,
+    //     itemSubCat: subCat,
+    //     itemMeet: meetCheck,
+    //     itemMeetDesc: req.body.itemMeetDesc,
+    //     itemMail: mailCheck,
+    //     itemMailDesc: req.body.itemMailDesc,
+    //     itemMailPrice,
+    //     userId: req.user.userId,
+    // }
 
     var itemData = {
-        itemName: req.body.itemName,
-        itemDesc: req.body.itemDesc,
-        itemPrice,
-        oldItemPrice: itemPrice,
-        itemCondition: req.body.itemCondition,
-        itemCat: req.body.itemCat,
-        itemSubCat: subCat,
-        itemMeet: meetCheck,
-        itemMeetDesc: req.body.itemMeetDesc,
-        itemMail: mailCheck,
-        itemMailDesc: req.body.itemMailDesc,
-        itemMailPrice,
-        userId: req.user.userId,
+        user: req.user.id,
+        title: req.body.title,
+        desc: req.body.desc,
+        price: req.body.price
     }
-
+    console.log("myItem" + itemData)
     // create item
+    try {
+        await Item.create(itemData).then(data => {
+            return res.redirect('/c')
+        })  
+    } catch (err) {
+        console.error(err)
+    }
+    
     // ItemModel.create(itemData).then((newRecord, created)=> {
     //     if (!newRecord) {
     //         return res.render('error', {

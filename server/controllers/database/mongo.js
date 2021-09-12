@@ -6,7 +6,7 @@ const connectDB = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
-
+        mongoose.set('debug', true)
         console.log(`MongoDB Connected: ${conn.connection.host}`)
     } catch (err) {
         console.error(err)
