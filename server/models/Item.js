@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const ItemImageSchema = require('./ItemImage').schema;
+
 const ItemSchema = new mongoose.Schema({
     id: {
         type: String
@@ -37,7 +39,8 @@ const ItemSchema = new mongoose.Schema({
     },
     postageTime: {
         type: String
-    }
+    },
+    images: [ItemImageSchema]
 })
 
 module.exports = mongoose.model('Item', ItemSchema)

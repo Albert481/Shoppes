@@ -10,7 +10,7 @@
     <style>
         .sell-image-box {
             min-height: 300px;
-            max-height: 300px;
+            max-height: 310px;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -33,7 +33,7 @@
   <body>
   
   <div class="site-wrap">
-    <%- include('../partials/header')%>
+    <%- include('../partials/header-shop')%>
 
     <div class="site-section">
         <div class="container">
@@ -45,7 +45,7 @@
             </div>
           </div>
 
-          <form action="/sell" method='post' enctype="application/x-www-form-urlencoded">
+          <form action="/sell" method='post' enctype="multipart/form-data">
 
           <div class="row">
             
@@ -64,110 +64,75 @@
 
 
             
-                <div class='row p-3 p-lg-5 border'>
+                <div class='p-3 p-lg-5 border'>
                   <h3 class="h3 mb-3 text-black">Photos</h3>
-                  <div class='col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
-                      <label for='image0' style='cursor:pointer;'>
-                          Cover Image<img src='/uploads/default/defaultItemImg.jpg' class='img-thumbnail' id='image0Preview'>
-                      </label>
-                      <input class='hidden' type='file' id='image0' name='imageCover'>
-                  </div>
-                  <div class='col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
-                      <label for='image1' style='cursor:pointer;'>
-                          Image 2<img src='/uploads/default/defaultItemImg.jpg' class='img-thumbnail' id='image1Preview'>
-                      </label>
-                      <input class='hidden' type='file' id='image1' name='images' disabled>
-                  </div>
-                  <div class='col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
-                      <label for='image2' style='cursor:pointer;'>
-                          Image 3<img src='/uploads/default/defaultItemImg.jpg' class='img-thumbnail' id='image2Preview' >
-                      </label>
-                      <input class='hidden' type='file' id='image2' name='images' disabled>
-                  </div>
-                  <div class='col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
-                      <label for='image3' style='cursor:pointer;'>
-                          Image 4<img src='/uploads/default/defaultItemImg.jpg' class='img-thumbnail' id='image3Preview'>
-                      </label>
-                      <input class='hidden' type='file' id='image3' name='images' disabled>
-                  </div>
-                </div>
-
-
-                <div>
-
-                </div>
-                <div class="form-group row">
-                    <div class="input-group">
-                        <div class='col-md-6'>
-                            <label for="itemCat">Category</label><br/>
-                            <select id='itemCat' name='itemCat' class='form-control'>
-                                <option value='' disabled selected>-SELECT-</option>
-                                <option value='1'>Figures</option>
-                                <option value='2'>Books & Games</option>
-                                <option value='3'>Videos & Music</option>
-                                <option value='4'>Cosplay</option>
-                            </select>
-                        </div>
-                        
-                        <div class='col-md-6' id='figuresCat' style='display:none'>
-                            <select id='figuresCat2' name='itemSubCat' class='form-control'>
-                                <option value='1'>General Figure</option>
-                                <option value='2'>Nendoroid</option>
-                                <option value='3'>figma</option>
-                            </select>
-                        </div>
-                        <div class='col-md-6' id='booksCat' style='display:none'>
-                            <select id='booksCat2' name='itemSubCat' class='form-control'>
-                                <option value='4'>Manga</option>
-                                <option value='5'>Novels</option>
-                                <option value='6'>Artbook/Photobook</option>
-                                <option value='7'>Magazines</option>
-                                <option value='8'>Video Games</option>
-                            </select>
-                        </div>
-                        <div class='col-md-6' id='videosCat' style='display:none'>
-                            <select id='videosCat2' name='itemSubCat' class='form-control'>
-                                <option value='9'>DVDs</option>
-                                <option value='10'>Blu-ray</option>
-                                <option value='11'>CDs</option>
-                            </select>
-                        </div>
-                        <div class='col-md-6' id='cosplayCat' style='display:none'>
-                            <select id='cosplayCat2' name='itemSubCat' class='form-control'>
-                                <option value='12'>Full Set</option>
-                                <option value='13'>Materials</option>
-                            </select>
-                        </div>
-                        <input type='hidden' name='itemSubCat' value=''>
+                  <div class="row">
+                    <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
+                        <label for='image0' style='cursor:pointer;'>
+                            Cover Image<img src='/uploads/default/defaultItemImg.png' class='img-thumbnail' id='image0Preview'>
+                        </label>
+                        <input class='hidden' type='file' hidden id='image0' name='imageCover'>
+                    </div>
+                    <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
+                        <label for='image1' style='cursor:pointer;'>
+                            Image 2<img src='/uploads/default/defaultItemImg.png' class='img-thumbnail' id='image1Preview'>
+                        </label>
+                        <input class='hidden' type='file' hidden id='image1' name='images' disabled>
+                    </div>
+                    <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
+                        <label for='image2' style='cursor:pointer;'>
+                            Image 3<img src='/uploads/default/defaultItemImg.png' class='img-thumbnail' id='image2Preview' >
+                        </label>
+                        <input class='hidden' type='file' hidden id='image2' name='images' disabled>
+                    </div>
+                    <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
+                        <label for='image3' style='cursor:pointer;'>
+                            Image 4<img src='/uploads/default/defaultItemImg.png' class='img-thumbnail' id='image3Preview'>
+                        </label>
+                        <input class='hidden' type='file' hidden id='image3' name='images' disabled>
+                    </div>
                     </div>
                 </div>
+
                 <br/>
-  
-                <div class="form-group row">
-                  <div class="col-md-12">
-                    <label for="title" class="text-black">Title </label>
-                    <input type="text" class="form-control" id="title" name="title">
-                  </div>
-                </div>
+                <div class='p-3 p-lg-5 border'>
+                    <h3 class="h3 mb-3 text-black">Listing Details</h3>
+                    <div class="form-group row">
+                        <div class="input-group">
+                            <div class='col-md-6'>
+                                <label for="itemCat">Category</label><br/>
+                                <input type="text" class="form-control" id="itemCat" name="itemCat" required>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="title" class="text-black">Title </label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                    </div>
 
-                <div class="form-group row">
-                  <div class="col-md-12">
-                    <label for="desc" class="text-black">Description </label>
-                    <textarea name="desc" id="desc" cols="30" rows="5" class="form-control" placeholder="Write your item description here..."></textarea>
-                  </div>
-                </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="desc" class="text-black">Description </label>
+                            <textarea name="desc" id="desc" cols="30" rows="5" class="form-control" placeholder="Write your item description here..." required></textarea>
+                        </div>
+                    </div>
 
-                <div class="form-group row">
-                  <div class="col-md-6">
-                  <label for="price" class="text-black">Price</label>
-                  <input type="text" class="form-control" id="price" name="price">
-                  </div>
-                </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="price" class="text-black">Price</label>
+                            <input type="text" class="form-control" id="price" name="price" required>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                  <button class="btn btn-primary btn-lg py-3 btn-block">Create Listing</button>
-                </div>
+                    <br/>
 
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg py-3 btn-block">Create Listing</button>
+                    </div>
+                </div>
   
   
                 <!-- <div class="form-group">
