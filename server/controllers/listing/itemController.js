@@ -22,8 +22,64 @@ exports.showItem = function(req, res) {
     var o_id = new ObjectId(id);
     Item.findOne({_id: o_id}, function( err, item) {
         console.log(item)
+
+        // find cover photo, if not use 1st
+        coverImg = ""
+        foundCover = false;
+        item.images.forEach((img) => {
+            if (img.isCover == true) {
+                foundCover = true;
+                coverImg = img.data
+            }
+        })
+        if (foundCover == false) {
+            coverImg = item.images[0].data
+        }
+
+
         res.render('item', {
             title: "Listing",
+            user: req.user,
+            item: item,
+            coverImg: coverImg
+        })
+    })
+    
+}
+
+exports.editItemPage = function(req, res) {
+    var ObjectId = require('mongodb').ObjectId; 
+    var id = req.params.itemId;       
+    var o_id = new ObjectId(id);
+
+    Item.findOne({_id: o_id}, function( err, item) {
+        console.log(item)
+
+        res.render('edititem', {
+            title: "Edit Listing",
+            user: req.user,
+            item: item
+        })
+    })
+    
+}
+
+exports.editItem = function(req, res) {
+    var ObjectId = require('mongodb').ObjectId; 
+    var id = req.params.itemId;       
+    var o_id = new ObjectId(id);
+
+    var updatedItemData = {
+        updatedAt: Date.now(),
+        title: req.body.title,
+        desc: req.body.desc,
+        price: req.body.price,
+        images: images
+    }
+
+    Item.updateOne(updatedItemData, {where: {_id: o_id}}).then((updated)=>{
+        res.render('edititem', {
+            title: "Edit Listing",
             user: req.user,
             item: item
         })

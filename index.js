@@ -117,7 +117,7 @@ const isLoggedIn = (req, res, next) => {
 // Routes
 app.get('/', index.show)
 app.get('/c', category.show)
-app.use('/', itemRouter);
+app.use('/item/', itemRouter);
 app.get('/brand', brand.show)
 app.get('/shop', stock.show)
 
@@ -345,7 +345,23 @@ app.get('/logout', (req, res) => {
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    res.status(404);
+
+    // respond with html page
+    // if (req.accepts('html')) {
+    //   res.render('error', { url: req.url, error: '404 - Page not found' });
+    //   return;
+    // }
+  
+    // respond with json
+    // if (req.accepts('json')) {
+    //   res.json({ error: 'Not found' });
+    //   return;
+    // }
+  
+    // default to plain-text. send()
+    // res.type('txt').send('Not found');
+    next()
 });
 
 // production error handler
@@ -357,10 +373,6 @@ app.use(function (req, res, next) {
 //         error: {}
 //     });
 // });
-
-// app.get('/listing', listing.hasAuthorization, listing.show);
-// app.post('/listing-gallery', listing.hasAuthorization, listing.create);
-// app.delete('/listing/:listing_id', listing.hasAuthorization, listing.delete);
 
 
 module.exports = app;
