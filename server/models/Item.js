@@ -7,6 +7,9 @@ const ItemSchema = new mongoose.Schema({
     user: {
         type: String
     },
+    createdAt: {
+        type: String
+    },
     title: {
         type: String
     },

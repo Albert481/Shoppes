@@ -16,6 +16,21 @@ exports.show = function(req, res) {
 	});
 };
 
+exports.showItem = function(req, res) {
+    var ObjectId = require('mongodb').ObjectId; 
+    var id = req.params.itemId;       
+    var o_id = new ObjectId(id);
+    Item.findOne({_id: o_id}, function( err, item) {
+        console.log(item)
+        res.render('item', {
+            title: "Listing",
+            user: req.user,
+            item: item
+        })
+    })
+    
+}
+
 // create listing
 exports.addItem = async (req,res,next) => {
 
@@ -56,6 +71,7 @@ exports.addItem = async (req,res,next) => {
                 // If Success
                 var itemData = {
                     user: req.user.id,
+                    createdAt: Date.now(),
                     title: populatedFields.title,
                     desc: populatedFields.desc,
                     price: populatedFields.price,

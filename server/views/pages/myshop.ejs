@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%- include('../partials/stylesheet')%>
+    
+    <style>
+        .sell-image-box {
+            min-height: 300px;
+            max-height: 310px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            padding: 20px;
+            overflow:hidden;    
+            
+        }
+        .sell-image-box img{
+            height:100%;
+            width:100%;
+            display: block;
+            object-fit: cover;
+        }
+    </style>
+
+  </head>
+  <body>
+  
+  <div class="site-wrap">
+    <%- include('../partials/header-shop')%>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
+                  <a href="#">
+                    <div style="width:233px; height:208px">
+                      <figure class="image">
+                        <img src="images/pendant1.jpg" alt="" class="img-fluid" style="border-radius: 5px;">
+                      </figure>
+                    </div>
+                    
+                  </a>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center">
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
+                  <a href="#">
+                    <div style="width:233px; height:208px">
+                    <figure class="image">
+                      <img src="images/ukelele.jpg" alt="" class="img-fluid" style="border-radius: 5px;">
+                    </figure>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-5 mb-lg-0">
+                  <a href="#">
+                    <div style="width:233px; height:208px">
+                    <figure class="image">
+                      <img src="images/deskmat1.jpg" alt="" class="img-fluid" style="border-radius: 5px;">
+                    </figure>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-5 mb-lg-0">
+                  <a href="#">
+                    <div style="width:233px; height:208px">
+                    <figure class="image">
+                      <img src="images/worldmap.jpg" alt="" class="img-fluid" style="border-radius: 5px;">
+                    </figure>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
+                  <a href="#">
+                    <div style="width:233px; height:208px">
+                    <figure class="image">
+                      <img src="images/steampunk1.jpg" alt="" style="border-radius: 5px; height: 100%; width: 100%; object-fit: cover">
+                    </figure>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-5 mb-lg-0">
+                  <a href="#">
+                    <div style="width:233px; height:208px">
+                    <figure class="image">
+                      <img src="images/rug.jpg" alt="" class="img-fluid" style="border-radius: 5px; max-height: 100%; max-width: 100%;">
+                    </figure>
+                  </div>
+                  </a>
+                </div>
+              </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+  
+  </div>
+
+  <%- include('../partials/javascript') %>
+
+  <script>
+
+  </script>
+
+    
+  </body>
+</html>

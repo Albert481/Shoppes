@@ -44,7 +44,8 @@ var upload = multer({ dest: './public/uploads/', limits: {fileSize: 1500000, fil
 var index = require('./server/controllers/listing/index');
 var category = require('./server/controllers/listing/category');
 var sell = require('./server/controllers/listing/sell');
-var brand = require('./server/controllers/shop/brand')
+var brand = require('./server/controllers/shop/brand');
+var stock = require('./server/controllers/shop/stock');
 
 // Modules to store session
 var myDatabase = require('./server/controllers/database/mysql');
@@ -75,8 +76,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressSession({
     secret: 'sometextgohere',
     store: sequelizeSessionStore,
-    resave: false,
     saveUninitialized: false,
+    resave: true,
+    rolling: true,
+    cookie: {
+       expires: 20 * 1000
+    }
 }));
 
 // Init passport authentication
@@ -114,6 +119,7 @@ app.get('/', index.show)
 app.get('/c', category.show)
 app.use('/', itemRouter);
 app.get('/brand', brand.show)
+app.get('/shop', stock.show)
 
 
 app.get('/auth/google',

@@ -9,6 +9,9 @@ router.get('/sell', itemController.hasAuthorization,(req,res)=>{
   user: req.user
   })
 })
+
+router.get('/:itemId', itemController.showItem)
+
 router.post('/sell', itemController.hasAuthorization, upload.fields([{name:'images',maxCount:4}]), itemController.addItem)
 
 module.exports = router;
