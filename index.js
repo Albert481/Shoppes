@@ -5,10 +5,28 @@ const dotev = require('dotenv').config()
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const cors = require('cors');
 var moment = require('moment');
 const connectDB = require('./server/controllers/database/mongo')
 connectDB()
+
+// App setup
+var app = express();
+var serverPort = process.env.PORT || 3000;
+var httpServer = require('http').Server(app);
+
+// view engine setup
+app.set('views', path.join(__dirname, 'server/views/pages'));
+app.set('view engine', 'ejs');
+
+// Passport configuration
+require('./server/controllers/user/auth');
+
+app.use(cors());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Routers
 var itemRouter = require('./server/routes/sell/itemRouter');
@@ -41,22 +59,6 @@ var sequelizeSessionStore = new SessionStore({
 // var passport = require('passport');
 // var flash = require('connect-flash');
 
-// App setup
-var app = express();
-var serverPort = process.env.PORT || 3000;
-var httpServer = require('http').Server(app);
-
-// view engine setup
-app.set('views', path.join(__dirname, 'server/views/pages'));
-app.set('view engine', 'ejs');
-
-// Passport configuration
-require('./server/controllers/user/auth');
-
-app.use(logger('dev'));
-app.use(express.urlencoded({extended: true}));
-app.use(express.json())
-app.use(cookieParser());
 // app.use(require('node-sass-middleware')({
 //     src: path.join(__dirname, 'public'),
 //     dest: path.join(__dirname, 'public'),

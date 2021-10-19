@@ -1,22 +1,17 @@
 const mongoose = require('mongoose')
 
-const ItemImageSchema = require('./ItemImage').schema;
-
 const ItemSchema = new mongoose.Schema({
     id: {
         type: String
     },
     user: {
-        type: String,
-        required: true
+        type: String
     },
     title: {
-        type: String,
-        required: true
+        type: String
     },
     desc: {
-        type: String,
-        required: true
+        type: String
     },
     itemSubCat: {
         type: String
@@ -31,8 +26,7 @@ const ItemSchema = new mongoose.Schema({
         type: String
     },
     price: {
-        type: String,
-        required: true
+        type: String
     },
     quantity: {
         type: String
@@ -40,7 +34,10 @@ const ItemSchema = new mongoose.Schema({
     postageTime: {
         type: String
     },
-    images: [ItemImageSchema]
+    images: [{
+        data: String,
+        isCover: Boolean
+    }]
 })
 
 module.exports = mongoose.model('Item', ItemSchema)

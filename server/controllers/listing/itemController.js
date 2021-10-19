@@ -1,13 +1,12 @@
+const upload = require("../services/uploadItemImages");
+const arrayUpload = upload.array("images");
+
 // import modules
 var fs = require('fs');
 var mime = require('mime');
 var jimp = require('jimp')
-// image file types
-var IMAGE_TYPES = ['image/jpeg','image/jpg','image/png'];
 
 const Item = require('../../models/Item')
-
-
 
 exports.show = function(req, res) {
 	// Render home screen
@@ -20,66 +19,69 @@ exports.show = function(req, res) {
 // create listing
 exports.addItem = async (req,res,next) => {
 
-    console.log("req.files[images]: " + JSON.stringify(req.files['images']))
+    console.log("req.files " + JSON.stringify(req.files))
     console.log("req.body " + JSON.stringify(req.body))
-    
-    req.files['images'].forEach((items)=> {
-        console.log('IMAGE LOGS HERE')
-        console.log(items)
-        var src,dest,targetPath,targetName,tempPath = items.path;
-        var type = mime.getType(items.mimetype);
-        var extension = items.path.split(/[. ]+/).pop();
 
-        if (IMAGE_TYPES.indexOf(type) == -1){
-            return res.status(415).send('Only jpeg, jpg and png are allowed.')
+    var populatedFields = req.body
+
+    let fileArray = req.files["images"];
+    const images = [];
+
+    for (let i = 0; i < fileArray.length; i++) {
+
+        var imageData = {
+            data: fileArray[i].location,
+            isCover: false
         }
 
-        if (err)
-            console.log(err)
-        src = fs.createReadStream(tempPath);
-        dest = fs.createWriteStream(targetPath);
-        console.log('BEFORE PIPING')
-        src.pipe(dest)
-        src.on('error',(err)=>{
-            return res.render('error', {
-                message: err.message,
-                error: {},
-                title: 'Error uploading image'
+        images.push(imageData)
+    }
+
+    arrayUpload(req, res, (error) => {
+        if (error) {
+            console.log('errors', error);
+            res.status(500).json({
+                status: 'fail',
+                error: error
             });
-        });
-        src.on('end', ()=>{
-
-            console.log('BEFORE CREATING IMAGE')
-
-            var itemData = {
-                user: req.user.id,
-                title: req.body.title,
-                desc: req.body.desc,
-                price: req.body.price,
-                images: req.files['images']
-            }
-            // create item
-            try {
-                Item.create(itemData)
-            } catch (err) {
-                console.error(err)
-            }
-
-            console.log('ITEM CREATED')
-            // resize image
-            jimp.read(targetPath).then((img)=>{
-                img.resize(400,jimp.AUTO)
-                img.write(targetPath)
-                console.log('resized image')
-            }).catch((err)=>{
-                return res.render('error', {
-                    message: err.message,
-                    error: {},
-                    title: 'Error uploading image'
+        } else {
+            // If file not found
+            if (req.files === undefined) {
+                console.log("uploadItemImages Error: No File Selected");
+                res.status(500).json({
+                    status: 'fail',
+                    message: 'Error: No File Selected'
                 });
-            })
+            } else {
+                // If Success
+                var itemData = {
+                    user: req.user.id,
+                    title: populatedFields.title,
+                    desc: populatedFields.desc,
+                    price: populatedFields.price,
+                    images: images
+                }
 
-            return res.redirect('/')
+                // create item
+                try {
+                    Item.create(itemData)
+                } catch (err) {
+                    console.error(err)
+                }
+        
+
+                return res.redirect('/')
+                // return res.render('error', {
+                //     message: err.message,
+                //     error: {},
+                //     title: 'Error uploading image'
+                // })
+            }
+        }
+
+    })
+
+            // return res.redirect('/')
             // if (!req.files['images'])
             //     return next();
             // req.files['images'].forEach((items)=> {
@@ -133,8 +135,7 @@ exports.addItem = async (req,res,next) => {
             //     })
             // })
             // return next();
-        })
-    })
+
 }
 
 exports.hasAuthorization = (req,res,next)=>{
