@@ -19,39 +19,21 @@ exports.show = function(req, res) {
 
 // create listing
 exports.addItem = async (req,res,next) => {
-    var itemData = {
-        user: req.user.id,
-        title: req.body.title,
-        desc: req.body.desc,
-        price: req.body.price
-    }
-    // create item
-    try {
-        Item.create(itemData).then(data => {
-            res.locals.newItemId = data['_id'];
-        })  
-    } catch (err) {
-        console.error(err)
-    }
-}
 
-// upload listing img
-exports.uploadItemImg = (req,res,next) => {
-    console.log("req.files[images]: " + req.files['images'])
-    console.log("req.body " + req.body)
-    var items = req.files['imageCover'][0]
-    var src,dest,targetPath,targetName,tempPath = items.path;
-    var type = mime.getType(items.mimetype);
-    var extension = items.path.split(/[. ]+/).pop();
-    var imagearray = [];
+    console.log("req.files[images]: " + JSON.stringify(req.files['images']))
+    console.log("req.body " + JSON.stringify(req.body))
+    
+    req.files['images'].forEach((items)=> {
+        console.log('IMAGE LOGS HERE')
+        console.log(items)
+        var src,dest,targetPath,targetName,tempPath = items.path;
+        var type = mime.getType(items.mimetype);
+        var extension = items.path.split(/[. ]+/).pop();
 
+        if (IMAGE_TYPES.indexOf(type) == -1){
+            return res.status(415).send('Only jpeg, jpg and png are allowed.')
+        }
 
-    if (IMAGE_TYPES.indexOf(type) == -1){
-        return res.status(415).send('Only jpeg, jpg and png are allowed.')
-    }
-
-    targetPath = './public/uploads/images/'+req.user.userId+'/items/'+req.res.locals.newItemId+'/' + items['originalname'];
-    fs.mkdir('./public/uploads/images/'+req.user.userId+'/items/'+req.res.locals.newItemId,function(err){
         if (err)
             console.log(err)
         src = fs.createReadStream(tempPath);
@@ -66,13 +48,23 @@ exports.uploadItemImg = (req,res,next) => {
             });
         });
         src.on('end', ()=>{
-            var imageData = {
-                imgItemName: items['originalname'],
-                itemId: req.res.locals.newItemId,
-                imgItemCover: true
-            }
+
             console.log('BEFORE CREATING IMAGE')
-            imagearray.push(imageData)
+
+            var itemData = {
+                user: req.user.id,
+                title: req.body.title,
+                desc: req.body.desc,
+                price: req.body.price,
+                images: req.files['images']
+            }
+            // create item
+            try {
+                Item.create(itemData)
+            } catch (err) {
+                console.error(err)
+            }
+
             console.log('ITEM CREATED')
             // resize image
             jimp.read(targetPath).then((img)=>{
@@ -86,59 +78,60 @@ exports.uploadItemImg = (req,res,next) => {
                     title: 'Error uploading image'
                 });
             })
-            if (!req.files['images'])
-                return next();
-            req.files['images'].forEach((items)=> {
-                console.log('IMAGE LOGS HERE')
-                console.log(items)
-                var src,dest,targetPath,targetName,tempPath = items.path;
-                var type = mime.getType(items.mimetype);
-                var extension = items.path.split(/[. ]+/).pop();
-                if (IMAGE_TYPES.indexOf(type) == -1){
-                    return res.status(415).send('Only jpeg, jpg and png are allowed.')
-                }
 
-                targetPath = './public/uploads/images/'+req.user.userId+'/items/'+req.res.locals.newItemId+'/' + items['originalname'];
-                src = fs.createReadStream(tempPath);
-                dest = fs.createWriteStream(targetPath);
-                console.log('BEFORE PIPING')
-                src.pipe(dest)
-                src.on('error',(err)=>{
-                    return res.render('error', {
-                        message: err.message,
-                        error: {},
-                        title: 'Error uploading image'
-                    });
-                });
-                src.on('end', ()=>{
-                    var imageData = {
-                        imgItemName: items['originalname'],
-                        itemId: req.res.locals.newItemId,
-                        imgItemCover: false
-                    }
-                    console.log('BEFORE CREATING IMAGE')
-                    imagearray.push(imageData)
+            return res.redirect('/')
+            // if (!req.files['images'])
+            //     return next();
+            // req.files['images'].forEach((items)=> {
+            //     console.log('IMAGE LOGS HERE')
+            //     console.log(items)
+            //     var src,dest,targetPath,targetName,tempPath = items.path;
+            //     var type = mime.getType(items.mimetype);
+            //     var extension = items.path.split(/[. ]+/).pop();
+            //     if (IMAGE_TYPES.indexOf(type) == -1){
+            //         return res.status(415).send('Only jpeg, jpg and png are allowed.')
+            //     }
 
-                    // resize image
-                    jimp.read(targetPath).then((img)=>{
-                        img.resize(400,jimp.AUTO)
-                        img.write(targetPath)
-                        console.log('resized image')
-                    }).catch((err)=>{
-                        return res.render('error', {
-                            message: err.message,
-                            error: {},
-                            title: 'Error uploading image'
-                        });
-                    })
-                    console.log(items)
-                    console.log('ITEM CREATED')
-                    fs.unlink(tempPath, (err)=>{
-                        if (err)
-                            console.log(err)
-                    })
-                })
-            })
+            //     targetPath = './public/uploads/images/'+req.user.userId+'/items/'+req.res.locals.newItemId+'/' + items['originalname'];
+            //     src = fs.createReadStream(tempPath);
+            //     dest = fs.createWriteStream(targetPath);
+            //     console.log('BEFORE PIPING')
+            //     src.pipe(dest)
+            //     src.on('error',(err)=>{
+            //         return res.render('error', {
+            //             message: err.message,
+            //             error: {},
+            //             title: 'Error uploading image'
+            //         });
+            //     });
+            //     src.on('end', ()=>{
+            //         var imageData = {
+            //             imgItemName: items['originalname'],
+            //             itemId: req.res.locals.newItemId,
+            //             imgItemCover: false
+            //         }
+            //         console.log('BEFORE CREATING IMAGE')
+
+            //         // resize image
+            //         jimp.read(targetPath).then((img)=>{
+            //             img.resize(400,jimp.AUTO)
+            //             img.write(targetPath)
+            //             console.log('resized image')
+            //         }).catch((err)=>{
+            //             return res.render('error', {
+            //                 message: err.message,
+            //                 error: {},
+            //                 title: 'Error uploading image'
+            //             });
+            //         })
+            //         console.log(items)
+            //         console.log('ITEM CREATED')
+            //         fs.unlink(tempPath, (err)=>{
+            //             if (err)
+            //                 console.log(err)
+            //         })
+            //     })
+            // })
             // return next();
         })
     })
