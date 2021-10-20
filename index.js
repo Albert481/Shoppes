@@ -30,6 +30,7 @@ app.use(cookieParser());
 
 // Routers
 var itemRouter = require('./server/routes/sell/itemRouter');
+var accountRouter = require('./server/routes/account/manageAccountRouter');
 
 
 //import multer
@@ -45,7 +46,7 @@ var index = require('./server/controllers/listing/index');
 var category = require('./server/controllers/listing/category');
 var sell = require('./server/controllers/listing/sell');
 var brand = require('./server/controllers/shop/brand');
-var stock = require('./server/controllers/shop/stock');
+var myshop = require('./server/controllers/shop/myshop');
 
 // Modules to store session
 var myDatabase = require('./server/controllers/database/mysql');
@@ -114,12 +115,15 @@ const isLoggedIn = (req, res, next) => {
     }
 }
 
-// Routes
+// Basic Routes
 app.get('/', index.show)
 app.get('/c', category.show)
-app.use('/item/', itemRouter);
 app.get('/brand', brand.show)
-app.get('/shop', stock.show)
+app.get('/myshop', myshop.show)
+
+// Advanced Routes
+app.use('/item', itemRouter);
+app.use('/account', accountRouter);
 
 
 app.get('/auth/google',

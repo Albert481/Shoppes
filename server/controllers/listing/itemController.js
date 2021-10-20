@@ -142,7 +142,7 @@ exports.addItem = async (req,res,next) => {
                 }
         
 
-                return res.redirect('/')
+                return res.redirect('/myshop')
                 // return res.render('error', {
                 //     message: err.message,
                 //     error: {},
@@ -211,13 +211,12 @@ exports.addItem = async (req,res,next) => {
 }
 
 exports.hasAuthorization = (req,res,next)=>{
-    // if (!req.isAuthenticated()){
-    //     return res.redirect('/login')
-    // }
-    // // if user account is not activated
-    // if (!req.user.active){
-    //     req.flash('loginMessage',"You are not allowed to view this page.")
-    //     return res.redirect('/')
-    // }
+    if (!req.isAuthenticated()){
+        return res.redirect('/')
+    }
+    // if user account is not activated
+    if (!req.user.active){
+        return res.redirect('/')
+    }
     next();
 }

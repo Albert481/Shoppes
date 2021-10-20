@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%- include('../partials/stylesheet')%>
+    
+  </head>
+  <body>
+  
+  <div class="site-wrap">
+    <%- include('../partials/header-shop')%>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row mb-5">
+                <!-- Side navbar -->
+                <div class="col-sm-3 col-md-2 order-1 mb-5 mb-md-0">
+                    <div class="border p-4 mb-4">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-1"><a href="/account/profile" class="d-flex"><span>Profile</span></a></li>
+                            <li class="mb-1"><a href="#" class="d-flex"><span>Account Settings</span></a></li>
+                            <li class="mb-1"><a href="/logout" class="d-flex"><span>Sign Out</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-sm-9 col-md-10 order-2">
+                    <div class='p-3 p-lg-5 border'>
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    <%- include('../partials/footer') %>
+  
+  </div>
+
+  <%- include('../partials/javascript') %>
+    
+  </body>
+</html>

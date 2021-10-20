@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%- include('../partials/stylesheet')%>
+    
+  </head>
+  <body>
+  
+  <div class="site-wrap">
+    <%- include('../partials/header-shop')%>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row mb-5">
+                <!-- Side navbar -->
+                <div class="col-sm-3 col-md-2 order-1 mb-5 mb-md-0">
+                    <div class="border p-4 mb-4">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-1"><a href="#" class="d-flex"><span>Profile</span></a></li>
+                            <li class="mb-1"><a href="#" class="d-flex"><span>Account Settings</span></a></li>
+                            <li class="mb-1"><a href="/logout" class="d-flex"><span>Sign Out</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                
+                <div class="col-sm-9 col-md-10 order-2">
+                    <div class='p-3 p-lg-5 border'>
+                        <form action="/account/profile" method='post' enctype="multipart/form-data">
+                        <div class="row">
+                            <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
+                                <label for='image0' style='cursor:pointer;'>
+                                    Profile Photo<img src='/uploads/default/defaultItemImg.png' class='img-thumbnail' id='image0Preview'>
+                                </label>
+                                <input class='hidden' type='file' hidden id='image0' name='profileimage'>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                            <label for="f_name" class="text-black">First Name</span></label>
+                            <input type="text" class="form-control" id="f_name" name="f_name" value="<%=user.fname%>">
+                            </div>
+                            <div class="col-md-6">
+                            <label for="l_name" class="text-black">Last Name</label>
+                            <input type="text" class="form-control" id="l_name" name="l_name" value="<%=user.lname%>">
+                            </div>
+                        </div>
+        
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label for="gender" class="text-black">Gender </label>
+                                <input type="text" class="form-control" id="gender" name="gender">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label for="bio" class="text-black">Bio </label>
+                                <textarea name="bio" id="bio" cols="30" rows="5" class="form-control"><%=user.bio %></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label for="birthday" class="text-black">Birthday</label>
+                                <input type="text" class="form-control" id="birthday" name="birthday" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-lg py-3 btn-block">Save Changes</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <%- include('../partials/footer') %>
+  
+  </div>
+
+  <%- include('../partials/javascript') %>
+    
+  </body>
+</html>

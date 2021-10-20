@@ -37,7 +37,19 @@
 
     <div class="site-section">
         <div class="container">
+          <div class='p-3 p-lg-5 border'>
             <div class="row d-flex justify-content-center">
+                <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
+                  <a href="/item/sell">
+                    <div style="width:233px; height:208px">
+                      <figure class="image">
+                        Add a listing
+                        <img src="" alt="" class="img-fluid" style="border-radius: 5px;">
+                      </figure>
+                    </div>
+                    
+                  </a>
+                </div>
                 <% items.forEach((item)=>{ %>
                 <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
                   <a href="/item/edit/<%= item._id%>">
@@ -99,7 +111,8 @@
                 </div>
               </div> -->
 
-        </div>
+          </div>
+      </div>
     </div>
 
     <%- include('../partials/footer') %>
