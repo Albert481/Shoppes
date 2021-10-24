@@ -77,11 +77,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressSession({
     secret: 'sometextgohere',
     store: sequelizeSessionStore,
-    saveUninitialized: false,
-    resave: true,
+    saveUninitialized: true,
+    resave: false,
     rolling: true,
     cookie: {
-       expires: 20 * 1000
+       maxAge: 1000 * 60 * 60 * 24
     }
 }));
 

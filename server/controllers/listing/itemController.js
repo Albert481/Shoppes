@@ -211,12 +211,12 @@ exports.addItem = async (req,res,next) => {
 }
 
 exports.hasAuthorization = (req,res,next)=>{
-    if (!req.isAuthenticated()){
-        return res.redirect('/')
-    }
-    // if user account is not activated
-    if (!req.user.active){
-        return res.redirect('/')
-    }
+    // if (!req.isAuthenticated()){
+    //     return res.redirect('/')
+    // }
+    // // if user account is not activated
+    // if (!req.user.active){
+    //     return res.redirect('/')
+    // }
     next();
 }

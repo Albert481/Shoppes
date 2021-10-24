@@ -10,40 +10,73 @@
   </head>
   <body>
   
-  <div class="site-wrap">
-    <%- include('../partials/header-shop')%>
-
-    <div class="site-section">
-        <div class="container">
-            <div class="row mb-5">
-                <!-- Side navbar -->
-                <div class="col-sm-3 col-md-2 order-1 mb-5 mb-md-0">
-                    <div class="border p-4 mb-4">
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-1"><a href="/account/profile" class="d-flex"><span>Profile</span></a></li>
-                            <li class="mb-1"><a href="#" class="d-flex"><span>Account Settings</span></a></li>
-                            <li class="mb-1"><a href="/logout" class="d-flex"><span>Sign Out</span></a></li>
-                        </ul>
+    <div class="site-wrap">
+        <%- include('../partials/header-shop')%>
+    
+        <div class="site-section">
+            <div class="container">
+                <div class="row mb-5">
+                    <!-- Side navbar -->
+                    <div class="col-sm-3 col-md-2 order-1 mb-5 mb-md-0">
+                        <div class="border p-4 mb-4">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-1"><a href="/account/profile" class="d-flex"><span>Profile</span></a></li>
+                                <li class="mb-1"><a href="/account/settings" class="d-flex"><span>Account Settings</span></a></li>
+                                <li class="mb-1"><a href="/logout" class="d-flex"><span>Sign Out</span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 order-2">
-                    <div class='p-3 p-lg-5 border'>
-                        
+    
+                    
+                    <div class="col-sm-9 col-md-10 order-2">
+                        <div class='p-3 p-lg-5 border'>
+                            <form action="/account/profile" method='post' enctype="multipart/form-data">
+                            <h2 class="h3 mb-3 text-black">Change Password</h2>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="chngpassword" class="text-black">Password </label>
+                                    <input type="password" class="form-control" id="chngpassword" name="chngpassword">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="chngpassword2" class="text-black">Confirm Password </label>
+                                    <input type="password" class="form-control" id="chngpassword2" name="chngpassword2">
+                                </div>
+                            </div>
+            
+    
+                            <h2 class="h3 mb-3 text-black">Change Email</h2>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="email" class="text-black">New Email </label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="email2" class="text-black">Confirm New Email </label>
+                                    <input type="email" class="form-control" id="email2" name="email2">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="emailpassword" class="text-black">Password </label>
+                                    <input type="password" class="form-control" id="emailpassword" name="emailpassword">
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-lg py-3 btn-block">Save Changes</button>
+                            </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            
         </div>
-    </div>
-
     
-
-    <%- include('../partials/footer') %>
-  
-  </div>
-
-  <%- include('../partials/javascript') %>
+        
     
-  </body>
-</html>
+        <%- include('../partials/footer') %>
+      
+      </div>
+    
+      <%- include('../partials/javascript') %>
+        
+      </body>
+    </html>
