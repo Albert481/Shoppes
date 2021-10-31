@@ -25,11 +25,12 @@ passport.serializeUser(function (user, done) {
 });
 // deserialize the user
 passport.deserializeUser(function (userId, done) {
-    User.findByPk(userId).then(function (user) {
+    User.findByPk(userId).then(function (user, err) {
+        console.log(JSON.stringify(err) + " : " + JSON.stringify(user))
         if (user) {
             done(null, user.get());
         } else {
-            done(user.errors, null);
+            done(err, null);
         }
     });
 });
@@ -56,7 +57,7 @@ passport.use(new GoogleStrategy({
 
             } else { // If user no account, create
                 User.create({ email: profile.emails[0].value, fname: profile.name.givenName, lname: profile.name.familyName, googleId: profile.id }).then(user => {
-                    console.log(user)                 
+                    console.log(JSON.stringify(user))                 
                     done(null, user);        
                 }).catch(error => console.log(error))
             }
@@ -91,7 +92,7 @@ passport.use(new FacebookStrategy({
 
             } else { // If user no account, create
                 User.create({ email: profile.emails[0].value, fname: profile.name.givenName, lname: profile.name.familyName, facebookId: profile.id }).then(user => {
-                    console.log(user)                 
+                    console.log(JSON.stringify(user))            
                     done(null, user);        
                 }).catch(error => console.log(error))
             }
