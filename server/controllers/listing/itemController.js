@@ -221,7 +221,7 @@ exports.deleteItem = function(req, res) {
         item.images.forEach((i) => {
             S3delete.deleteItemImageByKey(i.key)
         })
-        res.redirect('/myshop');
+        res.json({status: "Success", redirect: '/myshop'});
         
     })
     
