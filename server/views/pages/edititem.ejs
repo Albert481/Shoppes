@@ -45,7 +45,7 @@
             </div>
           </div>
 
-          <form action="/sell" method='post' enctype="multipart/form-data">
+          <form action="<%=item._id%>" method='post' enctype="multipart/form-data">
 
           <div class="row">
             
@@ -121,7 +121,7 @@
                         <div class="input-group">
                             <div class='col-md-6'>
                                 <label for="itemCat">Category</label><br/>
-                                <input type="text" class="form-control" id="itemCat" name="itemCat" required>
+                                <input type="text" class="form-control" id="itemCat" name="itemCat">
                             </div>
                         </div>
                     </div>
@@ -149,8 +149,13 @@
 
                     <br/>
 
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-lg py-3 btn-block">Update Listing</button>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-lg py-3 btn-block">Update Listing</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger btn-lg py-3 btn-block">Delete Listing</button>
+                        </div>
                     </div>
                 </div>
   

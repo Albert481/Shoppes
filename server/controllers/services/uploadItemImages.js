@@ -34,5 +34,16 @@ const upload = multer({
         },
     }),
 });
+
+
+// module.exports = {
+//     deleteItemImageByKey: function(imgkey) {
+//         s3.deleteObject({ Bucket: 'shoppes-itemimages', Key: imgkey }, (err, data) => {
+//             console.error(err);
+//             console.log(data);
+//         });
+//     }
+// }
+
   
 module.exports = upload;

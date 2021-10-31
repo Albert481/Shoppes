@@ -11,10 +11,10 @@ router.get('/sell', itemController.hasAuthorization,(req,res)=>{
 })
 router.post('/sell', itemController.hasAuthorization, upload.fields([{name:'images',maxCount:4}]), itemController.addItem)
 
-router.get('/:itemId', itemController.hasAuthorization, itemController.showItem)
+router.get('/:itemId', itemController.showItem)
 
 router.get('/edit/:itemId', itemController.hasAuthorization, itemController.editItemPage)
-router.post('/edit/:itemId', itemController.hasAuthorization, itemController.editItem)
+router.post('/edit/:itemId', itemController.hasAuthorization, upload.fields([{name:'images',maxCount:4}]), itemController.editItem)
 
 
 

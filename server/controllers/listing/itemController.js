@@ -21,28 +21,38 @@ exports.showItem = function(req, res) {
     var id = req.params.itemId;       
     var o_id = new ObjectId(id);
     Item.findOne({_id: o_id}, function( err, item) {
-        console.log(item)
+        if (err || item === null) {
+            console.log('Item not found')
+            res.render('error', {
+                title: "Error",
+                error: "Item not found",
+                user: null
+            })
+        } else {
+            console.log(item)
 
-        // find cover photo, if not use 1st
-        coverImg = ""
-        foundCover = false;
-        item.images.forEach((img) => {
-            if (img.isCover == true) {
-                foundCover = true;
-                coverImg = img.data
+            // find cover photo, if not use 1st
+            coverImg = ""
+            foundCover = false;
+            item.images.forEach((img) => {
+                if (img.isCover == true) {
+                    foundCover = true;
+                    coverImg = img.data
+                }
+            })
+            if (foundCover == false) {
+                coverImg = item.images[0].data
             }
-        })
-        if (foundCover == false) {
-            coverImg = item.images[0].data
+    
+    
+            res.render('item', {
+                title: "Listing",
+                user: req.user,
+                item: item,
+                coverImg: coverImg
+            })
         }
-
-
-        res.render('item', {
-            title: "Listing",
-            user: req.user,
-            item: item,
-            coverImg: coverImg
-        })
+        
     })
     
 }
@@ -64,25 +74,47 @@ exports.editItemPage = function(req, res) {
     
 }
 
+// edit listing
 exports.editItem = function(req, res) {
     var ObjectId = require('mongodb').ObjectId; 
     var id = req.params.itemId;       
     var o_id = new ObjectId(id);
 
-    var updatedItemData = {
-        updatedAt: Date.now(),
-        title: req.body.title,
-        desc: req.body.desc,
-        price: req.body.price,
-        images: images
+    // if images are edited/ user uploaded new images
+    if (req.files["images"]){
+        let fileArray = req.files["images"];
+        const images = [];
+    
+        for (let i = 0; i < fileArray.length; i++) {
+    
+            var imageData = {
+                data: fileArray[i].location,
+                isCover: false
+            }
+    
+            images.push(imageData)
+        }
+
+        var updatedItemData = {
+            updatedAt: Date.now(),
+            title: req.body.title,
+            desc: req.body.desc,
+            price: req.body.price,
+            images: images
+        }
+    } else {
+        var updatedItemData = {
+            updatedAt: Date.now(),
+            title: req.body.title,
+            desc: req.body.desc,
+            price: req.body.price
+        }
     }
 
-    Item.updateOne(updatedItemData, {where: {_id: o_id}}).then((updated)=>{
-        res.render('edititem', {
-            title: "Edit Listing",
-            user: req.user,
-            item: item
-        })
+
+    Item.updateOne({_id: o_id}, updatedItemData).then((updated)=>{
+        console.log('UPDATED ITEM: ' + JSON.stringify(updated))
+        res.redirect('/myshop');
     })
     
 }
@@ -152,71 +184,41 @@ exports.addItem = async (req,res,next) => {
         }
 
     })
+}
 
-            // return res.redirect('/')
-            // if (!req.files['images'])
-            //     return next();
-            // req.files['images'].forEach((items)=> {
-            //     console.log('IMAGE LOGS HERE')
-            //     console.log(items)
-            //     var src,dest,targetPath,targetName,tempPath = items.path;
-            //     var type = mime.getType(items.mimetype);
-            //     var extension = items.path.split(/[. ]+/).pop();
-            //     if (IMAGE_TYPES.indexOf(type) == -1){
-            //         return res.status(415).send('Only jpeg, jpg and png are allowed.')
-            //     }
+// delete listing
+exports.deleteItem = function(req, res) {
+    var ObjectId = require('mongodb').ObjectId; 
+    var id = req.params.itemId;       
+    var o_id = new ObjectId(id);
+    var userId = req.user.userId
+    var adminCheck = req.user.status
 
-            //     targetPath = './public/uploads/images/'+req.user.userId+'/items/'+req.res.locals.newItemId+'/' + items['originalname'];
-            //     src = fs.createReadStream(tempPath);
-            //     dest = fs.createWriteStream(targetPath);
-            //     console.log('BEFORE PIPING')
-            //     src.pipe(dest)
-            //     src.on('error',(err)=>{
-            //         return res.render('error', {
-            //             message: err.message,
-            //             error: {},
-            //             title: 'Error uploading image'
-            //         });
-            //     });
-            //     src.on('end', ()=>{
-            //         var imageData = {
-            //             imgItemName: items['originalname'],
-            //             itemId: req.res.locals.newItemId,
-            //             imgItemCover: false
-            //         }
-            //         console.log('BEFORE CREATING IMAGE')
+    // Find if item exist
+    Item.findOne({_id: o_id}, function( err, item) {
+        if ((!item) || !(item.userId==userId||adminCheck=='admin')){
+            return res.render('error', {
+                message: 'Error deleting item',
+                error: {},
+                title: 'Error deleting item'
+            });
+        }
+    })
+    Item.deleteOne({where: {_id: o_id}})
 
-            //         // resize image
-            //         jimp.read(targetPath).then((img)=>{
-            //             img.resize(400,jimp.AUTO)
-            //             img.write(targetPath)
-            //             console.log('resized image')
-            //         }).catch((err)=>{
-            //             return res.render('error', {
-            //                 message: err.message,
-            //                 error: {},
-            //                 title: 'Error uploading image'
-            //             });
-            //         })
-            //         console.log(items)
-            //         console.log('ITEM CREATED')
-            //         fs.unlink(tempPath, (err)=>{
-            //             if (err)
-            //                 console.log(err)
-            //         })
-            //     })
-            // })
-            // return next();
-
+    Item.updateOne(updatedItemData, {where: {_id: o_id}}).then((updated)=>{
+        res.render('edititem', {
+            title: "Edit Listing",
+            user: req.user,
+            item: item
+        })
+    })
+    
 }
 
 exports.hasAuthorization = (req,res,next)=>{
-    // if (!req.isAuthenticated()){
-    //     return res.redirect('/')
-    // }
-    // // if user account is not activated
-    // if (!req.user.active){
-    //     return res.redirect('/')
-    // }
+    if (!req.isAuthenticated()){
+        return res.redirect('/')
+    }
     next();
 }
