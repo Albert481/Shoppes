@@ -16,6 +16,7 @@ router.get('/:itemId', itemController.showItem)
 router.get('/edit/:itemId', itemController.hasAuthorization, itemController.editItemPage)
 router.post('/edit/:itemId', itemController.hasAuthorization, upload.fields([{name:'images',maxCount:4}]), itemController.editItem)
 
+router.post('/delete/:itemId', itemController.hasAuthorization, itemController.deleteItem)
 
 
 

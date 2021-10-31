@@ -1,5 +1,6 @@
-const upload = require("../services/uploadItemImages");
-const arrayUpload = upload.array("images");
+const S3upload = require("../services/uploadItemImages");
+const S3delete = require("../services/deleteItemImages");
+const arrayUpload = S3upload.array("images");
 
 // import modules
 var fs = require('fs');
@@ -8,14 +9,15 @@ var jimp = require('jimp')
 
 const Item = require('../../models/Item')
 
+// GET: sell listing page
 exports.show = function(req, res) {
-	// Render home screen
 	res.render('sell', {
 		title: "Sell",
 		user: req.user
 	});
 };
 
+// GET: individual item
 exports.showItem = function(req, res) {
     var ObjectId = require('mongodb').ObjectId; 
     var id = req.params.itemId;       
@@ -57,6 +59,7 @@ exports.showItem = function(req, res) {
     
 }
 
+// GET: edit item page
 exports.editItemPage = function(req, res) {
     var ObjectId = require('mongodb').ObjectId; 
     var id = req.params.itemId;       
@@ -74,7 +77,7 @@ exports.editItemPage = function(req, res) {
     
 }
 
-// edit listing
+// POST: edit listing
 exports.editItem = function(req, res) {
     var ObjectId = require('mongodb').ObjectId; 
     var id = req.params.itemId;       
@@ -119,7 +122,7 @@ exports.editItem = function(req, res) {
     
 }
 
-// create listing
+// POST: create listing
 exports.addItem = async (req,res,next) => {
 
     console.log("req.files " + JSON.stringify(req.files))
@@ -133,6 +136,7 @@ exports.addItem = async (req,res,next) => {
     for (let i = 0; i < fileArray.length; i++) {
 
         var imageData = {
+            key: fileArray[i].key,
             data: fileArray[i].location,
             isCover: false
         }
@@ -186,7 +190,7 @@ exports.addItem = async (req,res,next) => {
     })
 }
 
-// delete listing
+// POST: delete listing
 exports.deleteItem = function(req, res) {
     var ObjectId = require('mongodb').ObjectId; 
     var id = req.params.itemId;       
@@ -195,7 +199,7 @@ exports.deleteItem = function(req, res) {
     var adminCheck = req.user.status
 
     // Find if item exist
-    Item.findOne({_id: o_id}, function( err, item) {
+    Item.findOne({_id: o_id}).then(function(item) {
         if ((!item) || !(item.userId==userId||adminCheck=='admin')){
             return res.render('error', {
                 message: 'Error deleting item',
@@ -203,16 +207,25 @@ exports.deleteItem = function(req, res) {
                 title: 'Error deleting item'
             });
         }
-    })
-    Item.deleteOne({where: {_id: o_id}})
 
-    Item.updateOne(updatedItemData, {where: {_id: o_id}}).then((updated)=>{
-        res.render('edititem', {
-            title: "Edit Listing",
-            user: req.user,
-            item: item
+        Item.findOneAndRemove({_id: o_id}, function(err, item) {
+            if (!err && item) {
+                console.log(item);
+                console.log("item successfully deleted")
+            }
+            else {
+                console.log("error")
+            }
         })
+
+        item.images.forEach((i) => {
+            S3delete.deleteItemImageByKey(i.key)
+        })
+        res.redirect('/myshop');
+        
     })
+    
+
     
 }
 

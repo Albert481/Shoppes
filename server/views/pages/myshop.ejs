@@ -9,24 +9,53 @@
     
     <style>
         .sell-image-box {
-            min-height: 300px;
-            max-height: 310px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            padding: 20px;
-            overflow:hidden;    
+          min-height: 300px;
+          max-height: 310px;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          padding: 20px;
+          overflow:hidden;    
             
         }
         .sell-image-box img{
-            height:100%;
-            width:100%;
-            display: block;
-            object-fit: cover;
+          height:100%;
+          width:100%;
+          display: block;
+          object-fit: cover;
         }
+
+        .remove-item {
+          display: none;
+          position: absolute;
+          top: -10px;
+          right: -10px;
+          border-radius: 10em;
+          padding: 2px 6px 3px;
+          text-decoration: none;
+          font: 700 21px/20px sans-serif;
+          background: #555;
+          border: 3px solid #fff;
+          color: #FFF;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            -webkit-transition: background 0.5s;
+            transition: background 0.5s;
+          }
+          .remove-item:hover {
+          background: #E54E4E;
+            padding: 3px 7px 5px;
+            top: -11px;
+          right: -11px;
+          }
+          .remove-item:active {
+          background: #E54E4E;
+            top: -10px;
+          right: -11px;
+          }
     </style>
 
   </head>
@@ -39,6 +68,7 @@
         <div class="container">
           <div class='p-3 p-lg-5 border'>
             <div class="row d-flex justify-content-center">
+              <form id='deleteItem' action=/item/delete/ method='post'></form>
                 <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
                   <a href="/item/sell">
                     <div style="width:233px; height:208px">
@@ -50,19 +80,22 @@
                     
                   </a>
                 </div>
+                
                 <% items.forEach((item)=>{ %>
                 <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
+                  <button class="remove-item" onclick="deleteItem(`<%= item._id%>`)" style="display: inline;">&#215;</button>
                   <a href="/item/edit/<%= item._id%>">
                     <div style="width:233px; height:208px">
                       <figure class="image">
                         <img src="<%= item.coverImg %>" alt="" class="img-fluid" style="border-radius: 5px;">
                       </figure>
                     </div>
-                    
                   </a>
                 </div>
                 <% }) %>
+              
               </div>
+              </form>
               <!-- <div class="row d-flex justify-content-center">
                 <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
                   <a href="#">
@@ -122,7 +155,21 @@
   <%- include('../partials/javascript') %>
 
   <script>
+    function deleteItem(id) {  
+      console.log('deleting: ' + id)
+      $.ajax({
+        type: "POST",
+        url: '/item/delete/'+id,
+        data: JSON.stringify({ id: id }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
 
+        },
+        error: function (error) {
+
+        }
+      });
+    }
   </script>
 
     

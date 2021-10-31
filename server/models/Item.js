@@ -38,6 +38,7 @@ const ItemSchema = new mongoose.Schema({
         type: String
     },
     images: [{
+        key: String,
         data: String,
         isCover: Boolean
     }]
