@@ -216,7 +216,7 @@ a {
     .site-navbar .site-navigation .site-menu .active > a {
       color: #a28054; }
     .site-navbar .site-navigation .site-menu a {
-      text-decoration: none !important;
+      text-decoration: none;
       font-size: 15px;
       display: inline-block; }
     .site-navbar .site-navigation .site-menu > li {

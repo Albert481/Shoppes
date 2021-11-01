@@ -31,6 +31,7 @@ app.use(cookieParser());
 // Routers
 var itemRouter = require('./server/routes/sell/itemRouter');
 var accountRouter = require('./server/routes/account/manageAccountRouter');
+var categoryRouter = require('./server/routes/category/categoryRouter');
 
 
 //import multer
@@ -43,7 +44,6 @@ var upload = multer({ dest: './public/uploads/', limits: {fileSize: 1500000, fil
 
 //Import controllers
 var index = require('./server/controllers/listing/index');
-var category = require('./server/controllers/listing/category');
 var sell = require('./server/controllers/listing/sell');
 var brand = require('./server/controllers/shop/brand');
 var myshop = require('./server/controllers/shop/myshop');
@@ -117,13 +117,13 @@ const isLoggedIn = (req, res, next) => {
 
 // Basic Routes
 app.get('/', index.show)
-app.get('/c', category.show)
 app.get('/brand', brand.show)
 app.get('/myshop', myshop.show)
 
 // Advanced Routes
 app.use('/item', itemRouter);
 app.use('/account', accountRouter);
+app.use('/c', categoryRouter);
 
 
 app.get('/auth/google',
