@@ -130,6 +130,8 @@ exports.addItem = async (req,res,next) => {
 
     var populatedFields = req.body
 
+    // TODO: Validation for images REQUIRED
+
     let fileArray = req.files["images"];
     const images = [];
 

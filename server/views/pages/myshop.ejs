@@ -8,54 +8,84 @@
     <%- include('../partials/stylesheet')%>
     
     <style>
-        .sell-image-box {
-          min-height: 300px;
-          max-height: 310px;
-          -webkit-touch-callout: none;
-          -webkit-user-select: none;
-          -khtml-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          padding: 20px;
-          overflow:hidden;    
-            
-        }
-        .sell-image-box img{
-          height:100%;
-          width:100%;
-          display: block;
-          object-fit: cover;
-        }
 
-        .remove-item {
-          display: none;
-          position: absolute;
+      /* set the size and position of the icon */
+      .icon-plus {
+        position: relative;
+        top:50%;
+        left:50%;
+        width: 5vmin;
+        height: 5vmin;
+        transform: translate(-50%, -50%);
+      }
+      /* vertical line */
+      .icon-plus:before {
+        content:"";
+        position: absolute;
+        top: 0;
+        left: 37.5%;
+        width: 25%;
+        height: 100%;
+        background-color: rgb(75, 71, 71);
+      }
+      /* horizontal line */
+      .icon-plus:after {
+        content:"";
+        position: absolute;
+        top:37.5%;
+        left: 0;
+        width: 100%;
+        height: 25%;
+        background-color: rgb(75, 71, 71);
+      }
+      .sell-image-box {
+        min-height: 300px;
+        max-height: 310px;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 20px;
+        overflow:hidden;    
+          
+      }
+      .sell-image-box img{
+        height:100%;
+        width:100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .remove-item {
+        display: none;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        border-radius: 10em;
+        padding: 2px 6px 3px;
+        text-decoration: none;
+        font: 700 21px/20px sans-serif;
+        background: #555;
+        border: 3px solid #fff;
+        color: #FFF;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
+          text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+          -webkit-transition: background 0.5s;
+          transition: background 0.5s;
+        }
+        .remove-item:hover {
+        background: #E54E4E;
+          padding: 3px 7px 5px;
+          top: -11px;
+        right: -11px;
+        }
+        .remove-item:active {
+        background: #E54E4E;
           top: -10px;
-          right: -10px;
-          border-radius: 10em;
-          padding: 2px 6px 3px;
-          text-decoration: none;
-          font: 700 21px/20px sans-serif;
-          background: #555;
-          border: 3px solid #fff;
-          color: #FFF;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            -webkit-transition: background 0.5s;
-            transition: background 0.5s;
-          }
-          .remove-item:hover {
-          background: #E54E4E;
-            padding: 3px 7px 5px;
-            top: -11px;
-          right: -11px;
-          }
-          .remove-item:active {
-          background: #E54E4E;
-            top: -10px;
-          right: -11px;
-          }
+        right: -11px;
+        }
     </style>
 
   </head>
@@ -71,10 +101,10 @@
               <form id='deleteItem' action=/item/delete/ method='post'></form>
                 <div class="col-6 col-sm-6 col-md-4 col-lg-2 mb-4 mb-lg-0">
                   <a href="/item/sell">
-                    <div style="width:233px; height:208px">
+                    <div style="width:233px; height:208px; border-style: groove; border-color: #555;">
                       <figure class="image">
-                        Add a listing
-                        <img src="" alt="" class="img-fluid" style="border-radius: 5px;">
+                        <div class="icon icon-plus"></div>
+                        <div style="justify-content: center; text-align: center;">Create listing</div>
                       </figure>
                     </div>
                     
@@ -148,6 +178,31 @@
       </div>
     </div>
 
+    <!-- Confirm Delete Modal -->
+    <div class="modal" id="deleteItemModal">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content form-wrapper">
+          <div class="close-box" data-dismiss="modal">
+            <i class="icon icon-times icon-2x"></i>
+          </div>
+          <div class="container-fluid">
+            <div class="form-group text-center">
+              <h4>Confirm Item Deletion </h4>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                  <button id="deleteConfirm" class="btn btn-danger py-3 btn-block">Confirm</button>
+              </div>
+              <div class="col-md-6">
+                  <button id="cancelDeleteItem" class="btn btn-secondary py-3 btn-block">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <%- include('../partials/footer') %>
   
   </div>
@@ -156,8 +211,15 @@
 
   <script>
     function deleteItem(id) {  
-      console.log('deleting: ' + id)
-      $.ajax({
+      $('#deleteItemModal').modal();
+
+      $('#cancelDeleteItem').click(function(e) {
+        $('.close-box').click();
+        $('#deleteConfirm').off('click');
+      })
+      
+      $('#deleteConfirm').click(function(e) {
+        $.ajax({
         type: "POST",
         url: '/item/delete/'+id,
         data: JSON.stringify({ id: id }),
@@ -171,6 +233,8 @@
 
         }
       });
+      })
+      
     }
   </script>
 

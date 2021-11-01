@@ -19,14 +19,11 @@ if (inDevMode) {
 
 // serialize the user for the session
 passport.serializeUser(function (user, done) {
-    console.log("serialize: " + JSON.stringify(user))
-    console.log("serializedID: " + user.id)
     done(null, user.id);
 });
 // deserialize the user
 passport.deserializeUser(function (userId, done) {
     User.findByPk(userId).then(function (user, err) {
-        console.log(JSON.stringify(err) + " : " + JSON.stringify(user))
         if (user) {
             done(null, user.get());
         } else {
