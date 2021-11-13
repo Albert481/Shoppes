@@ -66,6 +66,7 @@
             
                 <div class='p-3 p-lg-5 border'>
                   <h3 class="h3 mb-3 text-black">Photos</h3>
+                  <p class="mb-3">Add as many photos as you can so buyers can see every detail of your item!</p>
                   <div class="row">
                     <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
                         <label for='image0' style='cursor:pointer;'>
@@ -93,146 +94,138 @@
                     </div>
                     </div>
                 </div>
+                <br/>
+                <div class='p-3 p-lg-5 border'>
+                    <h3 class="h3 mb-3 text-black">Video</h3>
+                    <p class="mb-3">Bring your product to life with a 5 to 15 second video - it could help you drive more sales. The video won't feature sound, so let your product do the talking!</p>
+                    <div class="row">
+                        <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
+                            <label for='image0' style='cursor:pointer;'>
+                                <img src='/uploads/default/defaultItemImg.png' class='img-thumbnail' id='image0Preview'>
+                            </label>
+                            <input class='hidden' type='file' hidden id='image0' name='images'>
+                        </div>
+                    </div>
+                </div>
 
                 <br/>
                 <div class='p-3 p-lg-5 border'>
                     <h3 class="h3 mb-3 text-black">Listing Details</h3>
-                    <div class="form-group row">
-                        <div class="input-group">
-                            <div class='col-md-6'>
-                                <label for="itemCat">Category</label><br/>
-                                <input type="text" class="form-control" id="itemCat" name="itemCat">
-                            </div>
-                        </div>
-                    </div>
-    
+                    <p class="mb-3">Tell the world all about your item and why they’ll love it.</p>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="title" class="text-black">Title </label>
+                            <p class="mb-3">Include keywords that buyers would use to search for your item.</p>
                             <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="input-group">
+                            <div class='col-md-6'>
+                                <label for="category">Category</label><br/>
+                                <p class="mb-3">Type a two- or three-word description of your item to get category suggestions that will help more shoppers find it</p>
+                                <input type="text" class="form-control" id="category" name="category">
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="desc" class="text-black">Description </label>
+                            <p class="mb-3">Start with a brief overview that describes your item’s finest features. Shoppers will only see the first few lines of your description at first, so make it count!</p>
                             <textarea name="desc" id="desc" cols="30" rows="5" class="form-control" placeholder="Write your item description here..." required></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br/>
+
+                <div class='p-3 p-lg-5 border'>
+                    <h3 class="h3 mb-3 text-black">Stock Keeping & Pricing</h3>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="price" class="text-black">Price</label>
+                            <p class="mb-3">Remember to factor in the costs of materials, labour, and other business expenses. If you offer free delivery, make sure to include the cost of postage so it doesn't eat into your profits.</p>
+                            <input type="text" class="form-control" id="price" name="price" placeholder="S$" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label for="price" class="text-black">Price</label>
-                            <input type="text" class="form-control" id="price" name="price" required>
+                            <label for="quantity" class="text-black">Quantity</label>
+                            <p class="mb-3">For quantities greater than one, this listing will renew automatically until it sells out. You’ll be charged a USD 0.20 USD listing fee each time.</p>
+                            <input type="text" class="form-control" id="quantity" name="quantity" placeholder="1" required>
+                        </div>
+                    </div>
+                </div>
+
+                <br/>
+
+                <div class='p-3 p-lg-5 border'>
+                    <h3 class="h3 mb-3 text-black">Delivery</h3>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="countryOrigin" class="text-black">Country of origin </label>
+                            <p class="mb-3">The country you're dispatching from</p>
+                            <input type="text" class="form-control" id="countryOrigin" name="countryOrigin" placeholder="Singapore" required>
                         </div>
                     </div>
 
-                    <br/>
-
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-lg py-3 btn-block">Create Listing</button>
-                    </div>
-                </div>
-  
-  
-                <!-- <div class="form-group">
-                  <label for="c_create_account" class="text-black" data-toggle="collapse" href="#create_an_account" role="button" aria-expanded="false" aria-controls="create_an_account"><input type="checkbox" value="1" id="c_create_account"> Create an account?</label>
-                  <div class="collapse" id="create_an_account">
-                    <div class="py-2">
-                      <p class="mb-3">Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
-                      <div class="form-group">
-                        <label for="c_account_password" class="text-black">Account Password</label>
-                        <input type="email" class="form-control" id="c_account_password" name="c_account_password" placeholder="">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-  
-  
-                <div class="form-group">
-                    <label for="c_ship_different_address" class="text-black" data-toggle="collapse" href="#ship_different_address" role="button" aria-expanded="false" aria-controls="ship_different_address"><input type="checkbox" value="1" id="c_ship_different_address"> Ship To A Different Address?</label>
-                    <div class="collapse" id="ship_different_address">
-                        <div class="py-2">
-    
-                            <div class="form-group">
-                                <label for="c_diff_country" class="text-black">Country <span class="text-danger">*</span></label>
-                                <select id="c_diff_country" class="form-control">
-                                <option value="1">Select a country</option>    
-                                <option value="2">bangladesh</option>    
-                                <option value="3">Algeria</option>    
-                                <option value="4">Afghanistan</option>    
-                                <option value="5">Ghana</option>    
-                                <option value="6">Albania</option>    
-                                <option value="7">Bahrain</option>    
-                                <option value="8">Colombia</option>    
-                                <option value="9">Dominican Republic</option>    
-                                </select>
-                            </div>
-        
-        
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                <label for="c_diff_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_fname" name="c_diff_fname">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="processingTime" class="text-black">Processing Time</label>
+                            <p class="mb-3">Once a buyer has placed their order, how long does it take you to prepare, package, and put it in the mail?</p>
+                            <div class="input-group">
+                                <div class='col-md-6'>
+                                    <label for="itemCat">From</label><br/>
+                                    <select class="form-control" name="processingTimeFrom">
+                                        <option value="0">-- Choose One --</option>
+                                        <option value="1" id="sell_individual_hidden">1</option>    
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>   
+                                        <option value="4">4</option>   
+                                        <option value="5">5</option>   
+                                        <option value="6">6</option>     
+                                        <option value="7">7</option>   
+                                        <option value="8">8</option>   
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>  
+                                    </select>
                                 </div>
-                                <div class="col-md-6">
-                                <label for="c_diff_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_lname" name="c_diff_lname">
+                                <div class='col-md-6'>
+                                    <label for="itemCat">To</label><br/>
+                                    <select class="form-control" name="processingTimeTo">
+                                        <option value="0">-- Choose One --</option>
+                                        <option value="1" id="sell_individual_hidden">1</option>    
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>   
+                                        <option value="4">4</option>   
+                                        <option value="5">5</option>   
+                                        <option value="6">6</option>     
+                                        <option value="7">7</option>   
+                                        <option value="8">8</option>   
+                                        <option value="9">9</option>
+                                        <option value="10">10</option> 
+                                    </select>
                                 </div>
                             </div>
-        
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                <label for="c_diff_companyname" class="text-black">Company Name </label>
-                                <input type="text" class="form-control" id="c_diff_companyname" name="c_diff_companyname">
-                                </div>
+                            <div class="input-group">
+                                <input type="radio" name="processingTimeRadio" value="days">Business days
+                                <input type="radio" name="processingTimeRadio" value="weeks">Weeks
                             </div>
-        
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                <label for="c_diff_address" class="text-black">Address <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_address" name="c_diff_address" placeholder="Street address">
-                                </div>
-                            </div>
-        
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Apartment, suite, unit etc. (optional)">
-                            </div>
-        
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                <label for="c_diff_state_country" class="text-black">State / Country <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_state_country" name="c_diff_state_country">
-                                </div>
-                                <div class="col-md-6">
-                                <label for="c_diff_postal_zip" class="text-black">Posta / Zip <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_postal_zip" name="c_diff_postal_zip">
-                                </div>
-                            </div>
-        
-                            <div class="form-group row mb-5">
-                                <div class="col-md-6">
-                                <label for="c_diff_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_email_address" name="c_diff_email_address">
-                                </div>
-                                <div class="col-md-6">
-                                <label for="c_diff_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_diff_phone" name="c_diff_phone" placeholder="Phone Number">
-                                </div>
-                            </div>
-    
                         </div>
-  
+
                     </div>
                 </div>
-  
+
+                <br/>
+
                 <div class="form-group">
-                  <label for="c_order_notes" class="text-black">Order Notes</label>
-                  <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control" placeholder="Write your notes here..."></textarea>
+                    <button class="btn btn-primary btn-lg py-3 btn-block">Create Listing</button>
                 </div>
-  
-              </div> -->
+
             </div>
   
             </div>

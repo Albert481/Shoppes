@@ -10,32 +10,20 @@ const ItemSchema = new mongoose.Schema({
     createdAt: {
         type: String
     },
-    title: {
-        type: String
+    main: {
+        title: String,
+        category: String,
+        desc: String
     },
-    desc: {
-        type: String
+    stock: {
+        price: String,
+        quantity: String
     },
-    itemSubCat: {
-        type: String
-    },
-    type: {
-        type: String
-    },
-    origin: {
-        type: String
-    },
-    tags: {
-        type: String
-    },
-    price: {
-        type: String
-    },
-    quantity: {
-        type: String
-    },
-    postageTime: {
-        type: String
+    delivery: {
+        countryOfOrigin: String,
+        processingTimeFrom: String,
+        processingTimeTo: String,
+        processingTimeMode: String
     },
     images: [{
         key: String,

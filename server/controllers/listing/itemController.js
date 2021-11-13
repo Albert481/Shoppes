@@ -130,6 +130,24 @@ exports.addItem = async (req,res,next) => {
 
     var populatedFields = req.body
 
+    var mainDetailsSection = {
+        "title": populatedFields.title,
+        "category": populatedFields.category,
+        "desc": populatedFields.desc 
+    }
+
+    var stockKeepingSection = {
+        "price": populatedFields.price,
+        "quantity": populatedFields.quantity
+    }
+
+    var deliverySection = {
+        "countryOfOrigin": populatedFields.countryOrigin,
+        "processingTimeFrom": populatedFields.processingTimeFrom,
+        "processingTimeTo": populatedFields.processingTimeTo,
+        "processingTimeMode": populatedFields.processingTimeRadio
+    }
+
     // TODO: Validation for images REQUIRED
 
     let fileArray = req.files["images"];
@@ -164,11 +182,17 @@ exports.addItem = async (req,res,next) => {
             } else {
                 // If Success
                 var itemData = {
+                    // user: req.user.id,
+                    // createdAt: Date.now(),
+                    // title: populatedFields.title,
+                    // desc: populatedFields.desc,
+                    // price: populatedFields.price,
+                    // images: images
                     user: req.user.id,
                     createdAt: Date.now(),
-                    title: populatedFields.title,
-                    desc: populatedFields.desc,
-                    price: populatedFields.price,
+                    main: mainDetailsSection,
+                    stock: stockKeepingSection,
+                    delivery: deliverySection,
                     images: images
                 }
 

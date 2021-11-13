@@ -69,7 +69,7 @@
                   <div class="row">
                     <div class='col-6 col-xs-6 col-sm-4 col-md-4 col-lg-3 sell-image-box'>
                         <label for='image0' style='cursor:pointer;'>
-                            Cover Image
+                            Image 1
                             <% if (item.images[0]) { %>
                             <img src='<%=item.images[0].data%>' class='img-thumbnail' id='image0Preview'>
                             <% } else { %>
@@ -116,38 +116,117 @@
 
                 <br/>
                 <div class='p-3 p-lg-5 border'>
-                    <h3 class="h3 mb-3 text-black">Listing Details</h3>
-                    <div class="form-group row">
-                        <div class="input-group">
-                            <div class='col-md-6'>
-                                <label for="itemCat">Category</label><br/>
-                                <input type="text" class="form-control" id="itemCat" name="itemCat">
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="form-group row">
-                        <div class="col-md-12">
-                            <label for="title" class="text-black">Title </label>
-                            <input type="text" class="form-control" id="title" name="title" value="<%=item.title %>"required>
-                        </div>
-                    </div>
+                  <h3 class="h3 mb-3 text-black">Listing Details</h3>
+                  <p class="mb-3">Tell the world all about your item and why they’ll love it.</p>
+                  <div class="form-group row">
+                      <div class="col-md-12">
+                          <label for="title" class="text-black">Title </label>
+                          <p class="mb-3">Include keywords that buyers would use to search for your item.</p>
+                          <input type="text" class="form-control" id="title" name="title" value="<%=item.main.title %>" required>
+                      </div>
+                  </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-12">
-                            <label for="desc" class="text-black">Description </label>
-                            <textarea name="desc" id="desc" cols="30" rows="5" class="form-control" placeholder="Write your item description here..." required><%=item.desc %></textarea>
-                        </div>
-                    </div>
+                  <div class="form-group row">
+                      <div class="input-group">
+                          <div class='col-md-6'>
+                              <label for="category">Category</label><br/>
+                              <p class="mb-3">Type a two- or three-word description of your item to get category suggestions that will help more shoppers find it</p>
+                              <input type="text" class="form-control" id="category" name="category" value="<%=item.main.category %>">
+                          </div>
+                      </div>
+                  </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-6">
-                            <label for="price" class="text-black">Price</label>
-                            <input type="text" class="form-control" id="price" name="price" value="<%=item.price %>" required>
-                        </div>
-                    </div>
+                  <div class="form-group row">
+                      <div class="col-md-12">
+                          <label for="desc" class="text-black">Description </label>
+                          <p class="mb-3">Start with a brief overview that describes your item’s finest features. Shoppers will only see the first few lines of your description at first, so make it count!</p>
+                          <textarea name="desc" id="desc" cols="30" rows="5" class="form-control" placeholder="Write your item description here..." required><%=item.main.desc %></textarea>
+                      </div>
+                  </div>
 
-                    <br/>
+                </div>
+
+                <br/>
+
+                  <div class='p-3 p-lg-5 border'>
+                      <h3 class="h3 mb-3 text-black">Stock Keeping & Pricing</h3>
+                      <div class="form-group row">
+                          <div class="col-md-6">
+                              <label for="price" class="text-black">Price</label>
+                              <p class="mb-3">Remember to factor in the costs of materials, labour, and other business expenses. If you offer free delivery, make sure to include the cost of postage so it doesn't eat into your profits.</p>
+                              <input type="text" class="form-control" id="price" name="price" placeholder="S$" value="<%=item.stock.price %>" required>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-6">
+                              <label for="quantity" class="text-black">Quantity</label>
+                              <p class="mb-3">For quantities greater than one, this listing will renew automatically until it sells out. You’ll be charged a USD 0.20 USD listing fee each time.</p>
+                              <input type="text" class="form-control" id="quantity" name="quantity" placeholder="1" value="<%=item.stock.quantity %>" required>
+                          </div>
+                      </div>
+                  </div>
+
+                  <br/>
+
+                  <div class='p-3 p-lg-5 border'>
+                      <h3 class="h3 mb-3 text-black">Delivery</h3>
+                      <div class="form-group row">
+                          <div class="col-md-12">
+                              <label for="countryOrigin" class="text-black">Country of origin </label>
+                              <p class="mb-3">The country you're dispatching from</p>
+                              <input type="text" class="form-control" id="countryOrigin" name="countryOrigin" placeholder="Singapore" value="<%=item.delivery.countryOfOrigin %>" required>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-6">
+                              <label for="processingTime" class="text-black">Processing Time</label>
+                              <p class="mb-3">Once a buyer has placed their order, how long does it take you to prepare, package, and put it in the mail?</p>
+                              <div class="input-group">
+                                  <div class='col-md-6'>
+                                      <label for="itemCat">From</label><br/>
+                                      <select class="form-control" name="processingTimeFrom">
+                                          <option value="0">-- Choose One --</option>
+                                          <option value="1" <% if (item.delivery.processingTimeFrom == 1) { %> selected <% } %>>1</option>    
+                                          <option value="2" <% if (item.delivery.processingTimeFrom == 2) { %> selected <% } %>>2</option>
+                                          <option value="3" <% if (item.delivery.processingTimeFrom == 3) { %> selected <% } %>>3</option>   
+                                          <option value="4" <% if (item.delivery.processingTimeFrom == 4) { %> selected <% } %>>4</option>   
+                                          <option value="5" <% if (item.delivery.processingTimeFrom == 5) { %> selected <% } %>>5</option>   
+                                          <option value="6" <% if (item.delivery.processingTimeFrom == 6) { %> selected <% } %>>6</option>     
+                                          <option value="7" <% if (item.delivery.processingTimeFrom == 7) { %> selected <% } %>>7</option>   
+                                          <option value="8" <% if (item.delivery.processingTimeFrom == 8) { %> selected <% } %>>8</option>   
+                                          <option value="9" <% if (item.delivery.processingTimeFrom == 9) { %> selected <% } %>>9</option>
+                                          <option value="10" <% if (item.delivery.processingTimeFrom == 10) { %> selected <% } %>>10</option>  
+                                      </select>
+                                  </div>
+                                  <div class='col-md-6'>
+                                      <label for="itemCat">To</label><br/>
+                                      <select class="form-control" name="processingTimeTo">
+                                          <option value="0">-- Choose One --</option>
+                                          <option value="1" <% if (item.delivery.processingTimeTo == 1) { %> selected <% } %>>1</option>    
+                                          <option value="2" <% if (item.delivery.processingTimeTo == 2) { %> selected <% } %>>2</option>
+                                          <option value="3" <% if (item.delivery.processingTimeTo == 3) { %> selected <% } %>>3</option>   
+                                          <option value="4" <% if (item.delivery.processingTimeTo == 4) { %> selected <% } %>>4</option>   
+                                          <option value="5" <% if (item.delivery.processingTimeTo == 5) { %> selected <% } %>>5</option>   
+                                          <option value="6" <% if (item.delivery.processingTimeTo == 6) { %> selected <% } %>>6</option>     
+                                          <option value="7" <% if (item.delivery.processingTimeTo == 7) { %> selected <% } %>>7</option>   
+                                          <option value="8" <% if (item.delivery.processingTimeTo == 8) { %> selected <% } %>>8</option>   
+                                          <option value="9" <% if (item.delivery.processingTimeTo == 9) { %> selected <% } %>>9</option>
+                                          <option value="10" <% if (item.delivery.processingTimeTo == 10) { %> selected <% } %>>10</option> 
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="input-group">
+                                  <input type="radio" name="processingTimeRadio" value="days" <% if (item.delivery.processingTimeMode == "days") { %> checked <% } %>>Business days
+                                  <input type="radio" name="processingTimeRadio" value="weeks"  <% if (item.delivery.processingTimeMode == "weeks") { %> checked <% } %>>Weeks
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+
+                  <br/>
 
                     <div class="form-group row">
                         <div class="col-md-6">
