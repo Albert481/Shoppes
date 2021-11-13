@@ -2,7 +2,7 @@ const Item = require('../../models/Item')
 
 
 
-
+// GET: myshop page
 exports.show = function(req, res) {
 
 	Item.find({user: req.user.id}, function( err, items) {
