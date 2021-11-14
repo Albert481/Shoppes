@@ -50,8 +50,6 @@ exports.show = function(req, res) {
 
 	Promise.all([discoverListing, recommendedListing]).then(data => {
 		const [discoverListing, recommendedListing] = data
-		console.log("DISCOVER: " + JSON.stringify(discoverListing))
-		console.log("RECOMMENDED: " + JSON.stringify(recommendedListing))
 		res.render('index', {
 			title: 'Shoppes',
 			user: req.user,

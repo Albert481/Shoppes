@@ -32,6 +32,7 @@ app.use(cookieParser());
 var itemRouter = require('./server/routes/sell/itemRouter');
 var accountRouter = require('./server/routes/account/manageAccountRouter');
 var categoryRouter = require('./server/routes/category/categoryRouter');
+var elasticsearchRouter = require('./server/routes/elasticsearch/search');
 
 
 //import multer
@@ -124,6 +125,7 @@ app.get('/myshop', myshop.show)
 app.use('/item', itemRouter);
 app.use('/account', accountRouter);
 app.use('/c', categoryRouter);
+app.use('/', elasticsearchRouter);
 
 
 app.get('/auth/google',

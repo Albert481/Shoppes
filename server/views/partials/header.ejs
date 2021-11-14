@@ -105,6 +105,28 @@
   .nav .big-nav > ul > li > ul > li > ul > li > a:hover {
     text-decoration: underline;
   }
+  
+  /* for searchbox and results */
+  .searchdropdown {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+  }
+  .searchdropdown .result {
+    width: 100%;
+    padding: 4px;
+    background-color: #f5f7fa;
+    border-left: 1px solid #e6e9ed;
+    border-right: 1px solid #e6e9ed;
+    cursor: pointer;
+  }
+  .searchdropdown .result:last-child {
+    border-bottom: 1px solid #e6e9ed;
+  }
+  .searchdropdown .result:hover, .searchdropdown .result.selected {
+    background-color: #37bc9b;
+  }
+  
 </style>
 
 <script src="/js/jquery-3.3.1.min.js"></script>
@@ -123,7 +145,8 @@
           <div class="col-6 col-md-4 order-2 order-md-2 site-search-icon text-left">
             <form action="" class="site-block-top-search">
               <span class="icon icon-search2"></span>
-              <input type="text" class="form-control" placeholder="Search for items" style="border: 2px solid #222; border-width: 2px; border-color: #222; border-radius: 20px;">
+              <input type="text" id="searchbox" class="form-control" placeholder="Search for items" style="border: 2px solid #222; border-width: 2px; border-color: #222; border-radius: 20px;">
+              <div class="searchdropdown"></div>
               <!-- <input type="submit" class="btn btn-sm btn-primary" value=""> -->
             </form>
           </div>
@@ -722,6 +745,193 @@
   </header>
 
   <script>
+    // Searchbar
+    // const $search = document.querySelector("#searchbox");
+    // const $result = document.querySelector("#searchresults");
+    // const typeHandler = function(e) {
+    //   // $result.innerHTML = e.target.value;
+    //   // console.log($search);
+
+    //   $.ajax({
+    //   url: "/query",
+    //   type: "PUT",
+    //   cache: false,
+    //   data: {"query": e.target.value},
+    //   success: function(values) {
+    //       console.log(values)
+    //       // var data = values.aggregate.auto_complete.buckets
+    //       var _ = []
+
+    //       $.each(values, (index, value) => {
+    //         _.push(value.key)
+    //       });
+
+    //       // $("#search").autocomplete({
+    //       //   search: _
+    //       // });
+
+    //     },
+    //     error: function (error) {
+    //       console.log(error)
+    //     }
+    //   })
+    // }
+
+    // $search.addEventListener("input", typeHandler); // Register event for OnInput
+    // $search.addEventListener("propertychange", typeHandler); // for IE8
+
+    var settings = {
+      maxShownResults: 5, //Show no more than this many results
+
+      generated: {
+          // Don't touch these
+          lock: false,
+          original: "",
+          shown: 0,
+          selected: -1,
+          results: []
+      }
+    };
+
+    $("#searchbox").keyup(function(e) {
+      if ($(this).val() == "") { //If there is nothing in the search box then ensure no suggestions are showed
+          $(".searchdropdown").html("");
+      }
+      switch (e.keyCode) {
+          case 38: //up
+            settings.generated.selected = Math.max(
+                -1,
+                settings.generated.selected - 1
+            );//take 1 but make sure it doesn't go below -1 (none selected)
+            
+            ShowSelected(); //Show the selection highlight and put text into the searchbar
+            break;
+          case 40: //down
+            settings.generated.selected = 
+                Math.min(
+                settings.generated.shown - 1, 
+                settings.generated.selected + 1
+            );//add 1 but make sure it doesn't go above the suggestion count
+            
+            ShowSelected(); //Show the selection highlight and put text into the searchbar
+            break;
+          default:
+            if (settings.generated.original != $(this).val()) { //If it isn't up or down and the string is different then generate a new bunch of suggestions
+                settings.generated.original == $(this).val();
+                ShowResults($(this).val());
+            }
+            break;
+      }
+    });
+
+    function ShowSelected() {
+      $("#searchbox").val( //Make the search bar show the selected text
+          settings.generated.results[Math.max(0, settings.generated.selected)].toLowerCase()
+      );
+      $(`.searchdropdown>.result`).removeClass("selected"); //remove selected effect from all
+      $(`.searchdropdown>.result:nth-child(${settings.generated.selected+1})`).addClass("selected"); //add selected effect to one
+    }
+
+    $(document).on("click", ".searchdropdown>.result", function() { //On suggestion click
+      $("#searchbox").val($(this).attr("plain"));
+      ShowResults($(this).attr("plain"));
+    });
+
+    function ShowResults(query) { //This will generate suggestions based on a query
+      if (settings.generated.lock) return; //Don't pass if locked
+      settings.generated.lock = true; //lock
+
+
+      $.ajax({
+      url: "/query",
+      type: "PUT",
+      cache: false,
+      data: {"query": escape(query.replace(/ /g, '+'))},
+      success: function(data) {
+        // console.log("AJAX success: " + JSON.stringify(data))
+
+        var result = []; //Just get the array of results
+
+        $.each(data, (index, value) => {
+           result.push(value.key)
+        });
+        
+
+        // console.log("result: " + result)
+        const regex = new RegExp(query, "i"); //Create a regex pattern of the query case insensitive
+        const subst = `<b>${query}</b>`; //Replace the query with a bold query
+        var html = ""; //blank html which will be appended
+        var offset = 0; //offset if results are skipped
+        settings.generated.results = []; //results that are listed
+        for (var i = 0; i < Math.min(settings.maxShownResults, result.length) + offset; i++) 
+          { //loop maxShownResults or less if there are less results available
+            //for some reason there are many results which are the same word twice - this just ignores them
+            if (result[i].toLowerCase().split(" ")[0] == result[i].toLowerCase().split(" ")[1] && result[i].toLowerCase().split(" ").length == 2) 
+              {
+                offset++; //allow for skipping one
+              } else {
+              settings.generated.results[settings.generated.results.length] = result[i]; //add result to list
+              html +=
+                  `<div class="result" plain="${result[i].toLowerCase()}">` +
+                  result[i].toLowerCase().replace(regex, subst) +
+                  `</div>`; //html for a suggestion
+              }
+          }
+          settings.generated.shown = settings.generated.results.length //number of selections
+          settings.generated.selected = -1; //reset selected
+          $(".searchdropdown").html(html); //set html of dropdown to what was generated
+        }
+      })
+
+      settings.generated.lock = false; //unlock
+
+    }
+
+      // $.ajax({
+      //     url: `//suggestqueries.google.com/complete/search`, //Caution: this is not the official API but it is easy, this may break
+      //     data: {
+      //       client: "firefox", //odd behaviour with other clients
+      //       ds: "yt",
+      //       q: escape(query.replace(/ /g, '+'))
+      //     },
+      //     dataType: "jsonp", //JSONP
+      //     Method: "GET",
+      //     success: function(data) {
+      //       var result = data[1]; //Just get the array of results
+      //       const regex = new RegExp(query, "i"); //Create a regex pattern of the query case insensitive
+      //       const subst = `<b>${query}</b>`; //Replace the query with a bold query
+      //       var html = ""; //blank html which will be appended
+      //       var offset = 0; //offset if results are skipped
+      //       settings.generated.results = []; //results that are listed
+      //       for (
+      //           var i = 0;
+      //           i < Math.min(settings.maxShownResults, result.length) + offset;
+      //           i++
+      //       ) { //loop maxShownResults or less if there are less results available
+      //           //for some reason there are many results which are the same word twice - this just ignores them
+      //           if (
+      //             result[i].toLowerCase().split(" ")[0] ==
+      //                 result[i].toLowerCase().split(" ")[1] &&
+      //             result[i].toLowerCase().split(" ").length == 2
+      //           ) {
+      //             offset++; //allow for skipping one
+      //           } else {
+      //             settings.generated.results[settings.generated.results.length] = result[i]; //add result to list
+      //             html +=
+      //                 `<div class="result" plain="${result[i]}">` +
+      //                 result[i].replace(regex, subst) +
+      //                 `</div>`; //html for a suggestion
+      //           }
+      //       }
+      //       settings.generated.shown = settings.generated.results.length //number of selections
+      //       settings.generated.selected = -1; //reset selected
+      //       $(".searchdropdown").html(html); //set html of dropdown to what was generated
+      //     }
+      // });
+      
+    // }
+
+
     jQuery(function($) {
       // Add en remove class on menu item hover  
       $('.big-nav > ul > li').mouseover(function(){
