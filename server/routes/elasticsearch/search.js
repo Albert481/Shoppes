@@ -3,14 +3,13 @@ var router = express.Router();
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
     host: process.env.ELASTICSEARCH_URL,
-    // log: 'trace',
-    log : [{
-        type: 'stdio',
-        levels: ['error'] // change these options
-    }],
-    apiVersion: '7.7', // use the same version of your Elasticsearch instance
+    log: 'trace',
+    // log : [{
+    //     type: 'stdio',
+    //     levels: ['error'] // change these options
+    // }],
+    apiVersion: '7.4', // use the same version of your Elasticsearch instance
 });
-
 
 router.put("/query", function(req, res) {
     client.search({
@@ -51,9 +50,12 @@ router.put("/query", function(req, res) {
     }).then(function(resp) {
         if (resp.aggregations.auto_complete.buckets.length > 0) {
             return res.json(resp.aggregations.auto_complete.buckets)
+        } else {
+            res.send("")
         }
         
     });
+    
 })
 
 module.exports = router;
