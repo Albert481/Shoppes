@@ -51,7 +51,7 @@ router.put("/query", function(req, res) {
         if (resp.aggregations.auto_complete.buckets.length > 0) {
             return res.json(resp.aggregations.auto_complete.buckets)
         } else {
-            res.send("")
+            res.end()
         }
         
     });

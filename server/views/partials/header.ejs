@@ -109,6 +109,7 @@
   /* for searchbox and results */
   .searchdropdown {
     position: absolute;
+    z-index: 1000;
     top: 100%;
     width: 100%;
   }
@@ -795,7 +796,7 @@
 
     $("#searchbox").keyup(function(e) {
       if ($(this).val() == "") { //If there is nothing in the search box then ensure no suggestions are showed
-          $(".searchdropdown").html("");
+        $(".searchdropdown").html("");
       }
       switch (e.keyCode) {
           case 38: //up
