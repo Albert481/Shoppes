@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "SET NODE_ENV=PROD & node index.js",
     "dev": "SET NODE_ENV=DEV& nodemon index.js"
   },
   "author": "",
